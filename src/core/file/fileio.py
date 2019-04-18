@@ -30,7 +30,32 @@ class FileIO:
     def write_string_append(filename,string):
         FileIO.write_bytes_append(filename, Conversions.str_to_bytes(str(string)))
 
+    # Write a string and overwride a specific line
+    @staticmethod
+    def write_string_overwride_line(filename, string, line_num, newline=True):
+        if newline:
+            string+='\n'
+        lines = FileIO.read_string_lines(filename)
+        lines[line_num-1]=string
+        FileIO.write_string_overwride(filename,''.join(lines))
 
+    # Write a string and append a specific line
+    @staticmethod
+    def write_string_append_line(filename, string, line_num, newline=True):
+        if newline:
+            string+='\n'
+        lines = FileIO.read_string_lines(filename)
+        lines[line_num-1]=lines[line_num-1].rstrip()+string # rstrip() removes \n
+        FileIO.write_string_overwride(filename,''.join(lines))
+
+    # Write a string and insert after a specific line
+    @staticmethod
+    def write_string_insert_line(filename, string, line_num, newline=True):
+        if newline:
+            string+='\n'
+        lines = FileIO.read_string_lines(filename)
+        lines.insert(line_num-1, string)
+        FileIO.write_string_overwride(filename,''.join(lines))
 
 
 

@@ -9,6 +9,15 @@ if __name__=="__main__":
     FileIO.write_string_append(path,"line2\n")
     FileIO.write_string_append(path,"line3\n")
     FileIO.write_string_append(path,"line4\n")
+    content = FileIO.read_string_full("E:\\university\\OneDrive - Lancaster University\\programming\\python\\shuvel\\res\\testfiles\\meme")
+    print(content)
 
-    content = FileIO.read_string_line_num("E:\\university\\OneDrive - Lancaster University\\programming\\python\\shuvel\\res\\testfiles\\meme", 1,3)
+
+    FileIO.write_string_insert_line(path, "overwride", 2)
+    content = FileIO.read_string_full("E:\\university\\OneDrive - Lancaster University\\programming\\python\\shuvel\\res\\testfiles\\meme")
+    print(content)
+
+
+    FileIO.write_string_overwride_line(path, "", 2, newline=False)
+    content = FileIO.read_string_full("E:\\university\\OneDrive - Lancaster University\\programming\\python\\shuvel\\res\\testfiles\\meme")
     print(content)
