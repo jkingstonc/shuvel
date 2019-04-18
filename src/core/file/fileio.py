@@ -3,6 +3,8 @@
 
 # File handling static utilities for file operations
 
+from .. utils.conversions import Conversions
+
 class FileIO:
 
     FILE_READ = 'r'
@@ -18,6 +20,20 @@ class FileIO:
     ENCODING_UTF8 = 'utf-8'
 
 
+    # Write a string to a file with overwride
+    @staticmethod
+    def write_string_overwride(filename,string):
+        FileIO.write_bytes_overwride(filename, Conversions.str_to_bytes(str(string)))
+
+    # Write a string to a file with appendment
+    @staticmethod
+    def write_string_append(filename,string):
+        FileIO.write_bytes_append(filename, Conversions.str_to_bytes(str(string)))
+
+
+
+
+
     # Return a file object
     @staticmethod
     def open_file(path, mode=FILE_READ):
@@ -28,17 +44,10 @@ class FileIO:
     def close_file(file):
         file.close()
 
-    # Write a string to a file with overwride
+    # Clear out a file
     @staticmethod
-    def write_string_overwride(filename,string):
-        f=FileIO.open_file(filename, FileIO.FILE_WRITE).write(string)
-        FileIO.close_file(f)
-
-    # Write a string to a file with appendment
-    @staticmethod
-    def write_string_append(filename,string):
-        f=FileIO.open_file(filename, FileIO.FILE_APPEND).write(string)
-        FileIO.close_file(f)
+    def clear_file(filename):
+        FileIO.write_string_overwride(filename,"")
 
     # Write raw bytes to a file with overwride
     @staticmethod
@@ -54,9 +63,31 @@ class FileIO:
         f.write(b)
         FileIO.close_file(f)
 
-    # Read a file as bytes
+    # Read a file as a string into a single string
     @staticmethod
-    def read_bytes(filename):
+    def read_string_full(filename):
         f = FileIO.open_file(filename, mode=FileIO.FILE_BIN_READ)
         content = f.read()
+        content = Conversions.bytes_to_str(content)
         return content
+
+    # Read a file as a string into a string array
+    @staticmethod
+    def read_string_lines(filename):
+        f = FileIO.open_file(filename, mode=FileIO.FILE_BIN_READ)
+        content = f.readlines()
+        for i in range(0, len(content)):
+            content[i] = Conversions.bytes_to_str(content[i])
+        return content
+
+    # Read a file at a specific line, continuing for n more lines
+    @staticmethod
+    def read_string_line_num(filename, line, num_lines=1):
+        lines = FileIO.read_string_lines(filename)
+        if num_lines > len(lines):
+            print("Attempting to read too many lines!")
+            return None
+        new_lines=[]
+        for i in range(line-1, line-1+(num_lines)):
+            new_lines.append(lines[i])
+        return new_lines
