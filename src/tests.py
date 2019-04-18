@@ -11,3 +11,6 @@ if __name__=="__main__":
         "E:\\university\\OneDrive - Lancaster University\\programming\\python\\shuvel\\res\\testfiles\\meme",
         Conversions.str_to_bytes("hehhee")
     )
+
+    content = FileIO.read_bytes("E:\\university\\OneDrive - Lancaster University\\programming\\python\\shuvel\\res\\testfiles\\meme")
+    print(Conversions.bytes_to_str(content))

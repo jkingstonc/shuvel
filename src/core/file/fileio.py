@@ -6,6 +6,7 @@
 class FileIO:
 
     FILE_READ = 'r'
+    FILE_BIN_READ = 'r+b'
     FILE_WRITE = 'w'
     FILE_EXCLUSIVE_CREATE = 'x'
     FILE_APPEND = 'a'
@@ -52,3 +53,10 @@ class FileIO:
         f=FileIO.open_file(filename, mode=FileIO.FILE_BIN_APPEND)
         f.write(b)
         FileIO.close_file(f)
+
+    # Read a file as bytes
+    @staticmethod
+    def read_bytes(filename):
+        f = FileIO.open_file(filename, mode=FileIO.FILE_BIN_READ)
+        content = f.read()
+        return content
