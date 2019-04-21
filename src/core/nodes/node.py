@@ -20,24 +20,18 @@ class Node:
 
        
     def __init__(self):
-        self.checksum=None  # Unique identifier for this node object
-        self.creation_date=date.today()
+        self.checksum=None   # Unique identifier for this node object
+        self.type=None       # Describes what type of node this is
 
-    # Used to initialise variables, mainly the checksum
-    def create(self):
-        raise NotImplementedError("create should be implemented by subclasses!")
-    
+    # Generate a checksum for this node
+    def checksum_me(self):
+        raise NotImplementedError("This needs to be implemented by sub-classes")
+
     # Return the short version of the checksum
     def get_checksum_short(self):
-        return self.checksum[:CHECKSUM_SHORT_SIZE]
-
-    # Used to get all the file contents as one object
-    def get_file_contents(self):
-        raise NotImplementedError("get_file_contents should be implemented by subclasses!")
-
-
+        return self.checksum[:Node.CHECKSUM_SHORT_SIZE]
 
     # Generate a checksum based off file contents
     @staticmethod
-    def generate_checksum(file_contents):
-        return hashlib.sha256(Conversions.str_to_bytes(file_contents)).hexdigest()
+    def generate_checksum(contents):
+        return hashlib.sha256(Conversions.str_to_bytes(contents)).hexdigest()

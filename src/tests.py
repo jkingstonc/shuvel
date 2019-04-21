@@ -3,8 +3,9 @@ from core.nodes.relic import Relic
 if __name__=="__main__":
     
     r = Relic()
-    r.set_file_type("json")
-    r.set_raw_data("{'hello world'}")
-    r.create()
+    r.set_origin_directory("E:\\university\\OneDrive - Lancaster University\\programming\\python\\shuvel\\res\\testfiles")
+    r.set_origin_file("meme")
+    r.set_creation_date()
+    r.set_origin_data_contents("test contents.")
+    r.checksum_me()
     print(r)
-    print(r.get_checksum_short())
