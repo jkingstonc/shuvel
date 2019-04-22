@@ -126,3 +126,41 @@ class FileIO:
         if not os.path.exists(newpath):
             os.makedirs(newpath)
         return newpath
+
+    # Get all subdirectories from current directory
+    @staticmethod
+    def get_sub_dirs(path):
+        return [x[0] for x in os.walk(path)]
+    
+    # Get all immediate subdirectories in a given path
+    @staticmethod
+    def get_immediate_sub_dirs(path):
+        return [name for name in os.listdir(path)
+            if os.path.isdir(os.path.join(path, name))]
+
+    # Check if a subdirectory is immediately within a directory
+    @staticmethod
+    def check_for_immediate_sub_dir(path, required):
+        if required in FileIO.get_immediate_sub_dirs(path):
+            return True
+
+        return False
+
+    # Check if a subdirectory is within a directory recursively
+    @staticmethod
+    def check_for_sub_dir(path, required):
+        for dir in FileIO.get_sub_dirs(path):
+            if required in dir:
+                return True
+
+        return False
+
+    # Check if a directory is contained in a path
+    @staticmethod
+    def check_dir_within_parent(path, dir):
+        return dir in path
+
+    # Check a subdirectory exists
+    @staticmethod
+    def check_sub_dir_exists(path,dir):
+        return os.path.exists(path+dir)
