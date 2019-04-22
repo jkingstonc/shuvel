@@ -3,6 +3,7 @@
 
 # File handling static utilities for file operations
 
+import os
 from .. utils.conversions import Conversions
 
 class FileIO:
@@ -116,3 +117,12 @@ class FileIO:
         for i in range(line-1, line-1+(num_lines)):
             new_lines.append(lines[i])
         return new_lines
+
+
+    # Create a directory at path with name
+    @staticmethod
+    def create_dir(path):
+        newpath = path
+        if not os.path.exists(newpath):
+            os.makedirs(newpath)
+        return newpath
