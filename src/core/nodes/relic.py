@@ -12,25 +12,33 @@ class Relic(Node):
     def __init__(self):
         super().__init__()
 
-        self.origin_directory=None        # The directory that this relic lives in
-        self.origin_file=None             # The file that this relic is associated with
-
-        self.creation_date=None   # The date this relic was created
-
-        self.origin_data_contents="None"  # Contains the raw data that is described in the origin file to be written to disk
-
+        self._creation_date=None            # The date this relic was created
+        self._storage_data_contents="UNSET"  # Contains the raw data that is described in the origin file to be written to disk
     def __str__(self):
-        return "Checksum: "+str(self.get_checksum_short())+"..., Origin-Directory: "+str(self.origin_file)+", Origin-File: "+str(self.origin_data_contents)+", Creation-Date: "+str(self.creation_date)+", Origin-Data-Contents: "+str(self.origin_data_contents)
+        return "Checksum: "+str(self.get_checksum_short())+"..., Creation-Date: "+str(self._creation_date)+", Storage-Data-Contents: "+str(self._storage_data_contents)
     
+    # Set the checksum for this relic object
     def checksum_me(self):
-        self.checksum=Node.generate_checksum(str(self.origin_directory)+str(self.origin_file)+str(self.creation_date)+str(self.origin_data_contents))
-
-
-    def set_origin_directory(self, origin_directory):
-        self.origin_directory=origin_directory
-    def set_origin_file(self, origin_file):
-        self.origin_file=origin_file
+        self.checksum=Node.generate_checksum(str(self._creation_date)+str(self._storage_data_contents))
+    # Set the creation date for this relic object
     def set_creation_date(self, creation_date=date.today()):
-        self.creation_date=creation_date
-    def set_origin_data_contents(self, contents):
-        self.origin_data_contents=str(contents)
+        self._creation_date=creation_date
+    # Set the storage data contents for this relic object
+    def set_storage_data_contents(self, contents):
+        self._storage_data_contents=str(contents)
+
+
+
+    # Load a relic specified by hash onto disk
+    @staticmethod
+    def load_relic_from_hash(hash):
+        pass
+
+    # Save a relic object to disk
+    @staticmethod
+    def store_relic(relic):
+        pass
+
+
+
+    
