@@ -4,6 +4,7 @@
 # A class for helping locate and use project files when using the shovel command line app
 
 from .fileio import FileIO
+from ..utils import strings
 from . import shuveldefaults
 
 class ProjectFiles:
@@ -31,6 +32,20 @@ class ProjectFiles:
     # Get the path to the .shuv if we are in a .shuv directory
     @staticmethod
     def get_project_root(path):
+        # If we are in a valid .shuv project
+        if ProjectFiles.check_project_in_path(path):
+            # Strip all irelevant directory information to get the root
+            return strings.strip_after_substring(path, shuveldefaults.SHUV_ROOT_NAME)
+        return False
+
+    # Locate .shuv component directory paths
+    @staticmethod
+    def get_project_component_dir_path(path, component_dir):
+        pass
+
+    # Locate .shuv component path
+    @staticmethod
+    def get_project_component_dir_path(path, component):
         pass
 
     # Ensure all correct directories and files exist

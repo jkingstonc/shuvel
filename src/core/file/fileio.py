@@ -4,7 +4,7 @@
 # File handling static utilities for file operations
 
 import os
-from .. utils.conversions import Conversions
+from .. utils import conversions
 
 class FileIO:
 
@@ -24,12 +24,12 @@ class FileIO:
     # Write a string to a file with overwride
     @staticmethod
     def write_string_overwride(filename,string):
-        FileIO.write_bytes_overwride(filename, Conversions.str_to_bytes(str(string)))
+        FileIO.write_bytes_overwride(filename, conversions.str_to_bytes(str(string)))
 
     # Write a string to a file with appendment
     @staticmethod
     def write_string_append(filename,string):
-        FileIO.write_bytes_append(filename, Conversions.str_to_bytes(str(string)))
+        FileIO.write_bytes_append(filename, conversions.str_to_bytes(str(string)))
 
     # Write a string and overwride a specific line
     @staticmethod
@@ -94,7 +94,7 @@ class FileIO:
     def read_string_full(filename):
         f = FileIO.open_file(filename, mode=FileIO.FILE_BIN_READ)
         content = f.read()
-        content = Conversions.bytes_to_str(content)
+        content = conversions.bytes_to_str(content)
         return content
 
     # Read a file as a string into a string array
@@ -103,7 +103,7 @@ class FileIO:
         f = FileIO.open_file(filename, mode=FileIO.FILE_BIN_READ)
         content = f.readlines()
         for i in range(0, len(content)):
-            content[i] = Conversions.bytes_to_str(content[i])
+            content[i] = conversions.bytes_to_str(content[i])
         return content
 
     # Read a file at a specific line, continuing for n more lines
