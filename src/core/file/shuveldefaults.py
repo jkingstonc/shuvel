@@ -12,5 +12,6 @@ SETTINGS=SHUV_ROOT+"//settings//"
 
 MUSEUM_STORE=SHUV_ROOT+"//museum//"     # Directory for the museum directory {stores all nodes}
 RELIC_STORE=MUSEUM_STORE+"//relics//"     # Directory for relic storage
+RELIC_TEMP_STORE=RELIC_STORE+"//temp//"     # Directory for relic storage
 COLLECTION_STORE=RELIC_STORE            # Directory for collection storage
 STRATA_STORE=MUSEUM_STORE+"//stratas//"   # Directory for strata storage

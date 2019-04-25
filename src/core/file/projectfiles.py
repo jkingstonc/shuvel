@@ -1,7 +1,7 @@
 # James Clarke
 # 22/04/2019
 
-# A class for helping locate and use project files when using the shovel command line app
+# A class for helping locate and manage project files/directories
 
 from .fileio import FileIO
 from ..utils import strings
@@ -16,6 +16,7 @@ class ProjectFiles:
         settings=FileIO.create_dir(path+shuveldefaults.SETTINGS)
         museum_store=FileIO.create_dir(path+shuveldefaults.MUSEUM_STORE)
         relic_store=FileIO.create_dir(path+shuveldefaults.RELIC_STORE)
+        relic_temp_store=FileIO.create_dir(path+shuveldefaults.RELIC_TEMP_STORE)
         strata_store=FileIO.create_dir(path+shuveldefaults.STRATA_STORE)
 
     # Check if the given path is withing a .shuv
@@ -37,6 +38,7 @@ class ProjectFiles:
             # Strip all irelevant directory information to get the root
             return strings.strip_after_substring(path, shuveldefaults.SHUV_ROOT_NAME)
         return False
+
 
     # Locate .shuv component directory paths
     @staticmethod
