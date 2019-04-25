@@ -3,7 +3,7 @@
 
 # Node that represents a node object on disk
 
-from ..utils.conversions import Conversions
+from ..utils import conversions
 
 from enum import Enum
 import hashlib
@@ -34,4 +34,4 @@ class Node:
     # Generate a checksum based off file contents
     @staticmethod
     def generate_checksum(contents):
-        return hashlib.sha256(Conversions.str_to_bytes(contents)).hexdigest()
+        return hashlib.sha256(conversions.str_to_bytes(contents)).hexdigest()

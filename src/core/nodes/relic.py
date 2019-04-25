@@ -9,6 +9,8 @@ from datetime import date
 
 class Relic(Node):
 
+    INFO_SEPERATOR=":info_sep:"
+
     def __init__(self):
         super().__init__()
 
@@ -26,18 +28,9 @@ class Relic(Node):
     # Set the storage data contents for this relic object
     def set_storage_data_contents(self, contents):
         self._storage_data_contents=str(contents)
-
-
-
-    # Load a relic specified by hash onto disk
-    @staticmethod
-    def load_relic_from_hash(hash):
-        pass
-
-    # Save a relic object to disk
-    @staticmethod
-    def store_relic(relic):
-        pass
+    # Dump the relic contents into a single string
+    def get_string_dump(self):
+        return str(self._creation_date)+Relic.INFO_SEPERATOR+str(self._storage_data_contents)
 
 
 
