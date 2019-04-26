@@ -9,7 +9,8 @@ from datetime import date
 
 class Relic(Node):
 
-    INFO_SEPERATOR=":info_sep:"
+    INFO_SEPERATOR="::"
+    INFO_CONTENT_SEPERATOR="info_sep"
 
     def __init__(self):
         super().__init__()
@@ -34,7 +35,7 @@ class Relic(Node):
         self._storage_data_contents=str(contents)
     # Dump the relic contents into a single string
     def get_string_dump(self):
-        return str(self._creation_date)+":"+str(self._name)+Relic.INFO_SEPERATOR+str(self._storage_data_contents)
+        return str(self.checksum)+Relic.INFO_SEPERATOR+str(self._name)+Relic.INFO_SEPERATOR+str(self._creation_date)+Relic.INFO_SEPERATOR+Relic.INFO_CONTENT_SEPERATOR+Relic.INFO_SEPERATOR+str(self._storage_data_contents)
 
 
 
