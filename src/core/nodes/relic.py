@@ -9,9 +9,6 @@ from datetime import date
 
 class Relic(Node):
 
-    INFO_SEPERATOR="::"
-    INFO_CONTENT_SEPERATOR="info_sep"
-
     def __init__(self):
         super().__init__()
 
@@ -23,7 +20,7 @@ class Relic(Node):
     
     # Set the checksum for this relic object
     def checksum_me(self):
-        self.checksum=Node.generate_checksum(str(self._creation_date)+str(self._name)+str(self._storage_data_contents))
+        self._checksum=Node.generate_checksum(str(self._creation_date)+str(self._name)+str(self._storage_data_contents))
     # Set the creation date for this relic object
     def set_creation_date(self, creation_date=date.today()):
         self._creation_date=creation_date
@@ -35,7 +32,7 @@ class Relic(Node):
         self._storage_data_contents=str(contents)
     # Dump the relic contents into a single string
     def get_string_dump(self):
-        return str(self.checksum)+Relic.INFO_SEPERATOR+str(self._name)+Relic.INFO_SEPERATOR+str(self._creation_date)+Relic.INFO_SEPERATOR+Relic.INFO_CONTENT_SEPERATOR+Relic.INFO_SEPERATOR+str(self._storage_data_contents)
+        return str(self._checksum)+Node.INFO_SEPERATOR+str(self._name)+Node.INFO_SEPERATOR+str(self._creation_date)+Node.INFO_SEPERATOR+Node.INFO_CONTENT_SEPERATOR+Node.INFO_SEPERATOR+str(self._storage_data_contents)
 
 
 

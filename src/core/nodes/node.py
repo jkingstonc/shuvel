@@ -10,7 +10,8 @@ import hashlib
 from datetime import date
 
 class Node:
-
+    INFO_SEPERATOR="::"
+    INFO_CONTENT_SEPERATOR="info_sep"
     CHECKSUM_SHORT_SIZE = 5 # Number of characters for the short checksum
 
     class NodeType(Enum):
@@ -20,8 +21,8 @@ class Node:
 
        
     def __init__(self):
-        self.checksum=None   # Unique identifier for this node object
-        self.type=None       # Describes what type of node this is
+        self._checksum=None   # Unique identifier for this node object
+        self._type=None       # Describes what type of node this is
 
     # Generate a checksum for this node
     def checksum_me(self):
@@ -29,7 +30,7 @@ class Node:
 
     # Return the short version of the checksum
     def get_checksum_short(self):
-        return self.checksum[:Node.CHECKSUM_SHORT_SIZE]
+        return self._checksum[:Node.CHECKSUM_SHORT_SIZE]
 
     # Generate a checksum based off file contents
     @staticmethod
