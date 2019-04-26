@@ -5,7 +5,39 @@
 
 from .node import Node
 
-class Strata(Node):
+from datetime import date
+
+class Collection(Node):
+
+    INFO_SEPERATOR="::"
+    INFO_CONTENT_SEPERATOR="info_sep"
+    CHECKSUM_SEPERATOR="?"
 
     def __init__(self):
-        super()
+        super().__init__()
+
+        self._creation_date=None                # The date this relic was created
+        self._name="DEFAULT"                    # Name associated with this collection
+        self._relic_checksums=[]                # Contains array of relic checksums
+    def __str__(self):
+        return "Checksum: "+str(self.get_checksum_short())+"..., Creation-Date: "+str(self._creation_date)+", Relics: "+str(self._relic_checksums)
+    
+    # Set the checksum for this relic object
+    def checksum_me(self):
+        self.checksum=Node.generate_checksum(str(self._creation_date)+str(self._name)+self.get_relic_checksums_str())
+    # Set the creation date for this relic object
+    def set_creation_date(self, creation_date=date.today()):
+        self._creation_date=creation_date
+    # Set the name associated with this relic
+    def set_name(self, name):
+        self._name=name
+    # Set the array of relic checksums for this collection
+    def set_relic_checksums(self, checksums):
+        self._relic_checksums=checksums
+
+    # Generate a string from the relic checksum array
+    def get_relic_checksums_str(self):
+        return "".join(checksum+Collection.CHECKSUM_SEPERATOR for checksum in self._relic_checksums)
+    # Dump the relic contents into a single string
+    def get_string_dump(self):
+        return str(self.checksum)+Collection.INFO_SEPERATOR+str(self._name)+Collection.INFO_SEPERATOR+str(self._creation_date)+Collection.INFO_SEPERATOR+Collection.INFO_CONTENT_SEPERATOR+Collection.INFO_SEPERATOR+self.get_relic_checksums_str()

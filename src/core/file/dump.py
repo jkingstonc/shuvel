@@ -20,4 +20,4 @@ class Dump:
 
     # Write a collection object to disk in the archive directory of a project
     def dump_collection(collection,archive_dir):
-        FileIO.write_string_overwride(archive_dir+collection.get_checksum_short(), checksum.get_string_dump())
+        FileIO.write_string_overwride(archive_dir+collection.get_checksum_short(), collection.get_string_dump())
