@@ -2,16 +2,23 @@
 # 22/04/2019
 
 # A class for helping locate and manage project files/directories
-
+from enum import Enum
 from .fileio import FileIO
 from ..utils import strings
 from . import shuveldefaults
 
+
 class ProjectFiles:
     
+    class Dirs(Enum):
+       archive_relics = shuveldefaults.RELIC_STORE
+       archive_relics_temp = shuveldefaults.RELIC_TEMP_STORE
+       archive_strata = shuveldefaults.STRATA_STORE
+
     # Initialise an empty shuvel project 
     @staticmethod
     def init_project(path):
+        # initialising all directories
         root=FileIO.create_dir(path+shuveldefaults.SHUV_ROOT)
         settings=FileIO.create_dir(path+shuveldefaults.SETTINGS)
         museum_store=FileIO.create_dir(path+shuveldefaults.MUSEUM_STORE)
@@ -39,6 +46,10 @@ class ProjectFiles:
             return strings.strip_after_substring(path, shuveldefaults.SHUV_ROOT_NAME)
         return False
 
+    # Get a specified shuvel directory based on the path the command was executed from
+    @staticmethod
+    def get_dir_from_root(path, directory_specifier):
+        return ProjectFiles.get_project_root(path)+directory_specifier.value
 
     # Locate .shuv component directory paths
     @staticmethod
