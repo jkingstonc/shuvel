@@ -30,7 +30,12 @@ class Node:
 
     # Return the short version of the checksum
     def get_checksum_short(self):
-        return self._checksum[:Node.CHECKSUM_SHORT_SIZE]
+        return Node.to_short_checksum(self._checksum)
+
+    # Convert a standard checksum to the short version
+    @staticmethod
+    def to_short_checksum(checksum):
+        return checksum[:Node.CHECKSUM_SHORT_SIZE]
 
     # Generate a checksum based off file contents
     @staticmethod

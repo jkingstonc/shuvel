@@ -32,7 +32,7 @@ class Relic(Node):
         self._storage_data_contents=str(contents)
     # Dump the relic contents into a single string
     def get_string_dump(self):
-        return str(self._checksum)+Node.INFO_SEPERATOR+str(self._name)+Node.INFO_SEPERATOR+str(self._creation_date)+Node.INFO_SEPERATOR+Node.INFO_CONTENT_SEPERATOR+Node.INFO_SEPERATOR+str(self._storage_data_contents)
+        return str(self._checksum)+Node.INFO_SEPERATOR+str(Node.NodeType.relic)+Node.INFO_SEPERATOR+str(self._name)+Node.INFO_SEPERATOR+str(self._creation_date)+Node.INFO_SEPERATOR+Node.INFO_CONTENT_SEPERATOR+Node.INFO_SEPERATOR+str(self._storage_data_contents)
 
 
 
