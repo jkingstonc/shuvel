@@ -11,12 +11,12 @@ class Collection(Node):
 
     CHECKSUM_SEPERATOR="?"
 
-    def __init__(self):
+    def __init__(self,creation_date=date.today(),name="DEFAULT",checksums=[]):
         super().__init__()
 
-        self._creation_date=None                # The date this relic was created
-        self._name="DEFAULT"                    # Name associated with this collection
-        self._checksums=[]                # Contains array of relic checksums
+        self._creation_date=creation_date   # The date this relic was created
+        self._name=name                     # Name associated with this collection
+        self._checksums=checksums           # Contains array of relic checksums
     def __str__(self):
         return "Checksum: "+str(self.get_checksum_short())+"..., Creation-Date: "+str(self._creation_date)+", Relics: "+str(self._checksums)
     

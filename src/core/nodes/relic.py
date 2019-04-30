@@ -9,12 +9,12 @@ from datetime import date
 
 class Relic(Node):
 
-    def __init__(self):
+    def __init__(self,creation_date=date.today(),name="DEFAULT",storage_contents=""):
         super().__init__()
 
-        self._creation_date=None                # The date this relic was created
-        self._name="DEFAULT"                    # Name associated with this relic
-        self._storage_data_contents="UNSET"     # Contains the raw data that is described in the origin file to be written to disk
+        self._creation_date=creation_date               # The date this relic was created
+        self._name=name                                 # Name associated with this relic
+        self._storage_data_contents=storage_contents    # Contains the raw data that is described in the origin file to be written to disk
     def __str__(self):
         return "Checksum: "+str(self.get_checksum_short())+"..., Creation-Date: "+str(self._creation_date)+", Storage-Data-Contents: "+str(self._storage_data_contents)
     

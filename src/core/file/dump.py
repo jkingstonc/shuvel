@@ -16,7 +16,7 @@ class Dump:
     # Write a temp relic object to disk in the archive temp directory of a project
     @staticmethod
     def dump_temp_relic(relic,archive_dir):
-        FileIO.write_string_overwride(archive_dir+relic.get_checksum_short(), relic.get_string_dump())
+        FileIO.write_string_overwride(archive_dir+relic._name, relic.get_string_dump())
 
     # Write a collection object to disk in the archive directory of a project
     @staticmethod
@@ -26,7 +26,7 @@ class Dump:
     # Not sure if this will be needed in design
     @staticmethod
     def dump_temp_collection(collection,archive_dir):
-        pass
+        FileIO.write_string_overwride(archive_dir+collection._name, collection.get_string_dump())
 
     # Write a strata object to disk in the archive directory of a project
     @staticmethod
