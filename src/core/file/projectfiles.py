@@ -11,9 +11,12 @@ from . import shuveldefaults
 class ProjectFiles:
     
     class Dirs(Enum):
-       archive_relics = shuveldefaults.RELIC_STORE
-       archive_relics_temp = shuveldefaults.RELIC_TEMP_STORE
-       archive_strata = shuveldefaults.STRATA_STORE
+        archive_relics = shuveldefaults.RELIC_STORE
+        archive_relics_temp = shuveldefaults.RELIC_TEMP_STORE
+        archive_strata = shuveldefaults.STRATA_STORE
+
+    class Files(Enum):
+        temp_lookup = shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE
 
     # Initialise an empty shuvel project 
     @staticmethod
@@ -25,6 +28,8 @@ class ProjectFiles:
         relic_store=FileIO.create_dir(path+shuveldefaults.RELIC_STORE)
         relic_temp_store=FileIO.create_dir(path+shuveldefaults.RELIC_TEMP_STORE)
         strata_store=FileIO.create_dir(path+shuveldefaults.STRATA_STORE)
+
+        temp_lookup=FileIO.write_string_overwride(path+shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE,".lookup")
 
     # Check if the given path is withing a .shuv
     @staticmethod
@@ -50,6 +55,9 @@ class ProjectFiles:
     @staticmethod
     def get_dir_from_root(path, directory_specifier):
         return ProjectFiles.get_project_root(path)+directory_specifier.value
+
+    def get_file_from_root(path, file):
+        return ProjectFiles.get_project_root(path)+file.value
 
     # Locate .shuv component directory paths
     @staticmethod

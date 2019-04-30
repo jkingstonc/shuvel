@@ -8,6 +8,7 @@ from ..utils import conversions
 from enum import Enum
 import hashlib
 from datetime import date
+import random
 
 class Node:
     INFO_SEPERATOR="::"
@@ -27,6 +28,10 @@ class Node:
     # Generate a checksum for this node
     def checksum_me(self):
         raise NotImplementedError("This needs to be implemented by sub-classes")
+
+    # Generate a random checksum for this node (used for temp nodes)
+    def checksum_me_rand(self):
+        self._checksum=Node.generate_checksum(str(random.randint(0,999999999)))
 
     # Return the short version of the checksum
     def get_checksum_short(self):
