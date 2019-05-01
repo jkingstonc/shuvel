@@ -3,8 +3,10 @@
 
 # Node that represents a node object on disk
 
+
 from ..utils import conversions
 
+import json
 from enum import Enum
 import hashlib
 from datetime import date

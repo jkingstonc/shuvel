@@ -5,6 +5,7 @@
 
 from .node import Node
 
+import json
 from datetime import date
 
 class Collection(Node):
@@ -32,10 +33,15 @@ class Collection(Node):
     # Set the array of relic checksums for this collection
     def set_checksums(self, checksums):
         self._checksums=checksums
-
-    # Generate a string from the relic checksum array
-    def get_checksums_str(self):
-        return "".join(Node.to_short_checksum(checksum)+Collection.CHECKSUM_SEPERATOR for checksum in self._checksums)
     # Dump the relic contents into a single string
     def get_string_dump(self):
-        return str(self._checksum)+Node.INFO_SEPERATOR+str(Node.NodeType.collection)+Node.INFO_SEPERATOR+str(self._name)+Node.INFO_SEPERATOR+str(self._creation_date)+Node.INFO_SEPERATOR+Node.INFO_CONTENT_SEPERATOR+Node.INFO_SEPERATOR+self.get_checksums_str()
+        data={}
+        data['checksum'] = str(self._checksum)
+        data['type']=str(Node.NodeType.collection.value)
+        data['name']=str(self._name)
+        data['creation_date']=str(self._creation_date)
+        data['content']=[]
+        for checksum in self._checksums:
+            data['content'].append(checksum)
+        return json.dumps(data)
+       

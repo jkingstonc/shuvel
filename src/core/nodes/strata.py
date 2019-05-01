@@ -4,16 +4,18 @@
 # Strata that represents a pointer to a collection root at a certian point in time
 
 from .node import Node
+
+import json
 from datetime import date
 
 class Strata(Node):
 
-    def __init__(self):
+    def __init__(self, creation_date=date.today(), name="DEFAULT", root_collection=None):
         super().__init__()
 
-        self._creation_date=None                # The date this relic was created
-        self._name="DEFAULT"                    # Name associated with this collection
-        self._root_collection_checksum=None              # Contains checksum for the root collection this strata is pointing to
+        self._creation_date=creation_date                   # The date this relic was created
+        self._name=name                                     # Name associated with this collection
+        self._root_collection_checksum=root_collection      # Contains checksum for the root collection this strata is pointing to
     def __str__(self):
         return "Checksum: "+str(self.get_checksum_short())+"..., Creation-Date: "+str(self._creation_date)+", Root Collection: "+str(self._root_collection_checksum)
     
@@ -32,4 +34,10 @@ class Strata(Node):
 
     # Dump the relic contents into a single string
     def get_string_dump(self):
-        return str(self._checksum)+Node.INFO_SEPERATOR+str(Node.NodeType.strata)+Node.INFO_SEPERATOR+str(self._name)+Node.INFO_SEPERATOR+str(self._creation_date)+Node.INFO_SEPERATOR+Node.INFO_CONTENT_SEPERATOR+Node.INFO_SEPERATOR+Node.to_short_checksum(self._root_collection_checksum)
+        data={}
+        data['checksum'] = str(self._checksum)
+        data['type']=str(Node.NodeType.relic.value)
+        data['name']=str(self._name)
+        data['creation_date']=str(self._creation_date)
+        data['content']=str(self._root_collection_checksum)
+        return json.dumps(data)

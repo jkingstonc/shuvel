@@ -5,6 +5,7 @@
 
 from .node import Node
 
+import json
 from datetime import date
 
 class Relic(Node):
@@ -32,7 +33,13 @@ class Relic(Node):
         self._storage_data_contents=str(contents)
     # Dump the relic contents into a single string
     def get_string_dump(self):
-        return str(self._checksum)+Node.INFO_SEPERATOR+str(Node.NodeType.relic)+Node.INFO_SEPERATOR+str(self._name)+Node.INFO_SEPERATOR+str(self._creation_date)+Node.INFO_SEPERATOR+Node.INFO_CONTENT_SEPERATOR+Node.INFO_SEPERATOR+str(self._storage_data_contents)
+        data={}
+        data['checksum'] = str(self._checksum)
+        data['type']=str(Node.NodeType.relic.value)
+        data['name']=str(self._name)
+        data['creation_date']=str(self._creation_date)
+        data['content']=str(self._storage_data_contents)
+        return json.dumps(data)
 
 
 
