@@ -23,7 +23,7 @@ class Collection(Node):
     
     # Set the checksum for this relic object
     def checksum_me(self):
-        self._checksum=Node.generate_checksum(str(self._creation_date)+str(self._name)+str(self.get_checksums_str()))
+        self._checksum=Node.generate_checksum(str(self._creation_date)+str(self._name)+str(self._checksums))
     # Set the creation date for this relic object
     def set_creation_date(self, creation_date=date.today()):
         self._creation_date=creation_date

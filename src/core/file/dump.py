@@ -3,7 +3,6 @@
 
 # All verification is done before any of these functions are called
 
-from ..file.projectfiles import ProjectFiles
 from ..file.fileio import FileIO
 
 class Dump:
