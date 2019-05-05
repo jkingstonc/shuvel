@@ -26,8 +26,7 @@ class ProjectAction:
     # Gives current status of the project
     @staticmethod
     def status(path, args):
-        print("Temp files:")
-        ProjectFiles.display_nodes(path,ProjectFiles.Dirs.archive_relics_temp.value)
+        TempManager.display_temp_traversal(path,ProjectFiles.Dirs.archive_relics_temp.value)
         
 
 # Class for dispatching project file (node) related commands
