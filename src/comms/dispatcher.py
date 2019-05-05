@@ -21,8 +21,6 @@ class Dispatcher:
 
     @staticmethod
     def dispatch(source,args):
-        print("Source: "+source)
-        print("Action: "+getattr(args, 'action'))
         Dispatcher.parse_action(source,getattr(args, 'action'))(source,args)
 
     @staticmethod
@@ -30,6 +28,7 @@ class Dispatcher:
         return {
             'init': ProjectAction.init,
             'new': FileAction.new,
+            'archive' : FileAction.archive_node,
         }[action]
 
         
