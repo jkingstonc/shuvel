@@ -16,19 +16,21 @@
 #
 
 from .action import ProjectAction, FileAction
+from . import commands
 
 class Dispatcher:
 
     @staticmethod
     def dispatch(source,args):
-        Dispatcher.parse_action(source,getattr(args, 'action'))(source,args)
+        Dispatcher.parse_action(source,getattr(args, commands.action))(source,args)
 
     @staticmethod
     def parse_action(source,action):
         return {
-            'init': ProjectAction.init,
-            'new': FileAction.new,
-            'archive' : FileAction.archive_node,
+            'init'      : ProjectAction.init,
+            'status'    : ProjectAction.status,
+            'new'       : FileAction.new,
+            'archive'   : FileAction.archive_node,
         }[action]
 
         

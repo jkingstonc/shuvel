@@ -1,5 +1,7 @@
 # Class to help with converting temporary files to archive files
 
+import os
+
 from ..nodes.node import Node
 from ..nodes.relic import Relic
 from ..nodes.collection import Collection
@@ -63,6 +65,16 @@ class TempManager:
         Dump.dump_collection(new_collection,archive_dir)
 
         return new_collection._checksum
+
+    @staticmethod
+    def traverse_nodes(path, archive_dir):
+        checksums = os.listdir(archive_dir)
+        nodes=[Load.load_node(checksum, archive_dir) for checksum in checksums]
+
+        # First determine which checksums don't belong to any other
+        root_checksums=[]
+        
+
         
 
 

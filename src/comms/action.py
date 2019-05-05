@@ -1,5 +1,8 @@
 import sys
 sys.path.append("..") # Adds higher directory to python modules path.
+
+from . import commands
+
 from core.file.projectfiles import ProjectFiles
 from core.file.dump import Dump
 from core.file.load import Load
@@ -16,8 +19,16 @@ class ProjectAction:
     # Initialse a project in the given directory
     @staticmethod
     def init(path, args):
-        print("Initialising project...")
+        print("initializing project...")
         ProjectFiles.init_project(path)
+        print("successfully created Shuvel project.")
+
+    # Gives current status of the project
+    @staticmethod
+    def status(path, args):
+        print("Temp files:")
+        ProjectFiles.display_nodes(path,ProjectFiles.Dirs.archive_relics_temp.value)
+        
 
 # Class for dispatching project file (node) related commands
 class FileAction:
@@ -26,8 +37,8 @@ class FileAction:
     @staticmethod
     def new(path, args):
         node = None
-        name = getattr(args, 'node_name')
-        node_type = getattr(args, 'node_type')
+        name = getattr(args, commands.node_name)
+        node_type = getattr(args, commands.node_type)
         if node_type == "relic" or node_type == "r":
             node = Relic(name=name)
             node.checksum_me_rand()
@@ -36,17 +47,20 @@ class FileAction:
             node = Collection(name=name)
             node.checksum_me_rand()
             Dump.dump_temp_collection(node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+        print("successfully created '"+name+"'.")
 
 
     # Archive a given node name
     @staticmethod
     def archive_node(path, args):
-        # Archive the temp folder from the "test file 1" relic
+        name = getattr(args, commands.archive_name)
+        message = getattr(args, commands.message)
         TempManager.archive_temp(
-            Load.load_node(getattr(args, 'node_name'),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp)),
-            getattr(args, 'archive_name'),
-            getattr(args, 'message'),
+            Load.load_node(getattr(args, commands.node_name),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp)),
+            name,
+            message,
             ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),
             ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics),
             ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp)
             )
+        print("successfully archived '"+name+"'.")

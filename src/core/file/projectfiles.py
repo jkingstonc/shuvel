@@ -2,10 +2,13 @@
 # 22/04/2019
 
 # A class for helping locate and manage project files/directories
+
 from enum import Enum
 from .fileio import FileIO
 from ..utils import strings
 from . import shuveldefaults
+
+import os
 
 
 class ProjectFiles:
@@ -16,7 +19,8 @@ class ProjectFiles:
         archive_strata = shuveldefaults.STRATA_STORE
 
     class Files(Enum):
-        temp_lookup = shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE
+        pass
+        #temp_lookup = shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE
 
     # Initialise an empty shuvel project 
     @staticmethod
@@ -29,7 +33,7 @@ class ProjectFiles:
         relic_temp_store=FileIO.create_dir(path+shuveldefaults.RELIC_TEMP_STORE)
         strata_store=FileIO.create_dir(path+shuveldefaults.STRATA_STORE)
 
-        temp_lookup=FileIO.write_string_overwride(path+shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE,".lookup")
+        #temp_lookup=FileIO.write_string_overwride(path+shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE,".lookup")
 
     # Check if the given path is withing a .shuv
     @staticmethod
@@ -74,3 +78,8 @@ class ProjectFiles:
     def validate_shuv(path):
         # Here we need to traverse from .shuv and ensure the required files/directories are located
         pass
+
+    # Display all nodes in a given directory
+    @staticmethod
+    def display_nodes(path, archive_dir):
+        print(os.listdir(archive_dir))
