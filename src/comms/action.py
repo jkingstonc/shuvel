@@ -38,13 +38,17 @@ class FileAction:
     # Create a new temporary node in a project
     @staticmethod
     def new(path, args):
+        move_to = None
         node = None
         name = getattr(args, commands.node_name)
         node_type = getattr(args, commands.node_type)
+        destination = getattr(args, commands.destination_node_name)
+        if destination != None:
+            move_to=Load.load_node(destination,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+        else:
+           move_to=Load.load_node(ProjectFiles.Files.temp_root.value,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
 
-        root = Load.load_node(ProjectFiles.Files.temp_root.value,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-        root._checksums.append(name)
-        Dump.dump_temp_relic(root,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+        
 
         if node_type == "relic" or node_type == "r":
             node = Relic(name=name)
@@ -54,12 +58,21 @@ class FileAction:
             node = Collection(name=name)
             node.checksum_me_rand()
             Dump.dump_temp_collection(node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-        print("successfully created '"+name+"'.")
+
+        TempManager.move_node_to_collection(node,move_to,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+        print("successfully created '"+name+"' in '"+destination+"'.")
 
     # Move a node from one location to another
     @staticmethod
     def move(path, args):
-        pass
+        name = getattr(args, commands.node_name)
+        target = getattr(args, commands.destination_node_name)
+
+        source_node = Load.load_node(name,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+        target_node = Load.load_node(target,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+
+        TempManager.move_node_to_collection(source_node,target_node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+        print("successfully moved '"+name+"' to '"+target+"'.")
 
     # Archive a given node name
     @staticmethod

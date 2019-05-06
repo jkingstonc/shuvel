@@ -93,3 +93,27 @@ class TempManager:
                 print(''.join(" - " for x in range(0,depth))+" "+str(next_node))
         else:
             print("Project empty!")
+
+    # Move a node from one collection to another
+    @staticmethod
+    def move_node_to_collection(source, target, archive_temp):
+        if source._name not in target._checksums:
+            target._checksums.append(source._name)
+            target.checksum_me()
+            Dump.dump_temp_relic(target,archive_temp)
+
+            root = Load.load_node("root", archive_temp)
+            if root != None:
+                stack = queue.LifoQueue()
+                stack.put(root)
+
+                while not stack.empty():
+                    next_node, stack =Traversal.traverse_node(stack,archive_temp)
+                    if type(next_node) is Collection:
+                        # If the node is in the collection, and this collection ISN'T the target, remove it
+                        if next_node._name != target._name and source._name in next_node._checksums:
+                            next_node._checksums.remove(source._name)
+                            next_node.checksum_me()
+                            Dump.dump_temp_relic(next_node,archive_temp)
+                            break
+
