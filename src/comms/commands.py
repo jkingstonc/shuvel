@@ -4,6 +4,10 @@ node_name="node_name"
 node_name_long="--node_name"
 node_name_short="-n"
 
+destination_node_name="destination_node_name"
+destination_node_name_long="--destination_node_name"
+destination_node_name_short="-d"
+
 archive_name="archive_name"
 archive_name_long="--archive_name"
 archive_name_short="-an"

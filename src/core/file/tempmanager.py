@@ -9,6 +9,9 @@ from ..nodes.strata import Strata
 
 from .dump import Dump
 from .load import Load
+from .traversal import Traversal
+
+import queue 
 
 class TempManager:
     
@@ -68,58 +71,12 @@ class TempManager:
 
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
-    def display_temp_traversal(path, archive_dir):
-        checksums = os.listdir(archive_dir)
-        nodes=[Load.load_node(checksum, archive_dir) for checksum in checksums]
+    def display_temp_files(path, archive_dir):
+        root = Load.load_node("root", archive_dir)
+        stack = queue.LifoQueue()
+        stack.put(root)
 
-        # First determine which checksums don't belong to any other
-        root_nodes=[]
-        for node in nodes:
-            passed=True
-            for test_node in nodes:
-                # Check we aren't comparing the same nodes
-                if test_node != node:
-                    # Check if we are looking in a collection
-                    if type(test_node) is Collection:
-                        # If the node name is in the collection checksums, then it isn't a root node
-                        if node._name in test_node._checksums:
-                            # node isn't a root node
-                            passed=False
-            if passed:
-                root_nodes.append(node)
-        #print(", ".join(node._name for node in root_nodes))
-
-        for node in root_nodes:
-            TempManager.traverse_node(None,node,archive_dir,TempManager.display_nodes_hierarchy)
-
-    # Recursively return the checksum of an archived relic
-    @staticmethod
-    def traverse_node(previous_node,root_node, archive_dir, node_function):
-        node_function(root_node,previous_node)
-        # Loop over every checksum this collection points to
-        for checksum in root_node._checksums:
-            next_node = Load.load_node(checksum,archive_dir)
-            
-            # Recursively generate checksums if the next node is a collection
-            if type(next_node) is Collection:
-                TempManager.traverse_node(root_node,next_node, archive_dir, node_function)
-            else:
-                node_function(next_node,root_node)
-
-    # Format the display of a node
-    @staticmethod
-    def display_nodes_hierarchy(node,root_node=None):
-        prefix=""
-        if type(node) is Relic:
-            prefix="r: "
-
-        elif type(node) is Collection:
-            prefix="c: "
-
-        if root_node != None:
-            print(prefix+root_node._name+" -> "+node._name)
-        else:
-            print(prefix+node._name)
-        
-
-
+        while not stack.empty():
+            next_node, stack =Traversal.traverse_node(stack,archive_dir)
+            depth=Traversal.get_level_of_node(root,next_node,0,archive_dir)
+            print(''.join(" - " for x in range(0,depth))+" "+str(next_node))

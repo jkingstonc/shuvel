@@ -7,6 +7,7 @@ from core.file.projectfiles import ProjectFiles
 from core.file.dump import Dump
 from core.file.load import Load
 from core.file.tempmanager import TempManager
+from core.file.traversal import Traversal
 
 from core.nodes.node import Node
 from core.nodes.relic import Relic
@@ -26,7 +27,7 @@ class ProjectAction:
     # Gives current status of the project
     @staticmethod
     def status(path, args):
-        TempManager.display_temp_traversal(path,ProjectFiles.Dirs.archive_relics_temp.value)
+        TempManager.display_temp_files(path,ProjectFiles.Dirs.archive_relics_temp.value)
         
 
 # Class for dispatching project file (node) related commands
@@ -48,6 +49,10 @@ class FileAction:
             Dump.dump_temp_collection(node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
         print("successfully created '"+name+"'.")
 
+    # Move a node from one location to another
+    @staticmethod
+    def move(path, args):
+        pass
 
     # Archive a given node name
     @staticmethod
