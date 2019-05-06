@@ -19,3 +19,17 @@ node_type_short="-t"
 message="message"
 message_long="--message"
 message_short="-m"
+
+
+
+# Adding commands
+write_type="write_type"
+write_type_long="--write_type"
+write_type_short="-w"
+input_type="input_type"
+input_type_long="--input_type"
+input_type_short="-i"
+append="append"
+append_long="--append"
+append_short="-a"
+

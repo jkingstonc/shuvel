@@ -15,6 +15,9 @@ if __name__ == "__main__":
     parser.add_argument(commands.node_type_short,commands.node_type_long, help='The node type being specified.', default=None)
     parser.add_argument(commands.message_short,commands.message_long, help='The node type being specified.', default="")
 
+    parser.add_argument(commands.write_type_short,commands.write_type_long, help='Overwride or append node content.', default="")
+    parser.add_argument(commands.input_type_short,commands.input_type_long, help='Raw input or file input', default="")
+
     args = parser.parse_args()
 
     Dispatcher.dispatch(os.getcwd()+"\\",args)

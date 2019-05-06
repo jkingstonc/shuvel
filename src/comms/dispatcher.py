@@ -31,6 +31,7 @@ class Dispatcher:
             'status'    : ProjectAction.status,
             'new'       : FileAction.new,
             'move'      : FileAction.move,
+            'add'       : FileAction.add,
             'archive'   : FileAction.archive_node,
         }[action]
 
