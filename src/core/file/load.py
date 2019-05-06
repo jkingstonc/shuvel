@@ -29,7 +29,7 @@ class Load:
             c.checksum_me()
             return c
         elif data['type']==str(Node.NodeType.strata.value):
-            s=Strata(data['creation_date'],data['name'],data['content'])
+            s=Strata(creation_date=data['creation_date'],name=data['name'],message=data['message'],root_node=data['content'])
             s.checksum_me()
             return s
         else:

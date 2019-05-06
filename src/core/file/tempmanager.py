@@ -62,6 +62,7 @@ class TempManager:
                 collection_checksums.append(
                     TempManager.gen_collection_checksum(next_node, strata_name, strata_message, strata_dir, archive_dir, temp_dir)
                 )
+        # Dump the newly checksumed collection, and return its checksum
         new_collection = root_node
         new_collection.set_checksums(collection_checksums)
         new_collection.checksum_me()
@@ -71,7 +72,8 @@ class TempManager:
 
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
-    def display_temp_files(path, archive_dir):
+    def display_temp_files(archive_dir):
+        print("Live nodes:")
         # Get the root node of a project
         root = Load.load_node("root", archive_dir)
         if root != None:
