@@ -11,3 +11,5 @@ RELIC_STORE=MUSEUM_STORE+"//relics//"       # Directory for relic storage
 RELIC_TEMP_STORE=RELIC_STORE+"//temp//"     # Directory for relic storage
 STRATA_STORE=MUSEUM_STORE+"//stratas//"     # Directory for strata storage
 
+TEMP_ROOT_COLLECTION="root"
+

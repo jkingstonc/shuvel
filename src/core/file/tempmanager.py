@@ -15,6 +15,12 @@ import queue
 
 class TempManager:
     
+    @staticmethod
+    def gen_root_temp(name,temp_dir):
+        root = Collection(name=name)
+        root.checksum_me()
+        return Dump.dump_temp_collection(root,temp_dir)
+         
     
     # Archive all temporary nodes that span from the specified root node
     @staticmethod
@@ -73,10 +79,11 @@ class TempManager:
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_temp_files(archive_dir):
-        print("Live nodes:")
+        
         # Get the root node of a project
         root = Load.load_node("root", archive_dir)
         if root != None:
+            print("Live nodes:")
             stack = queue.LifoQueue()
             stack.put(root)
 

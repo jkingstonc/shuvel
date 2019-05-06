@@ -7,6 +7,7 @@ from core.file.projectfiles import ProjectFiles
 from core.file.dump import Dump
 from core.file.load import Load
 from core.file.tempmanager import TempManager
+from core.file.archivemanager import ArchiveManager
 from core.file.traversal import Traversal
 
 from core.nodes.node import Node
@@ -27,7 +28,8 @@ class ProjectAction:
     # Gives current status of the project
     @staticmethod
     def status(path, args):
-        TempManager.display_temp_files(path,ProjectFiles.Dirs.archive_relics_temp.value)
+        TempManager.display_temp_files(ProjectFiles.Dirs.archive_relics_temp.value)
+        ArchiveManager.display_stratas(ProjectFiles.Dirs.archive_strata.value)
         
 
 # Class for dispatching project file (node) related commands
@@ -39,6 +41,11 @@ class FileAction:
         node = None
         name = getattr(args, commands.node_name)
         node_type = getattr(args, commands.node_type)
+
+        root = Load.load_node(ProjectFiles.Files.temp_root.value,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+        root._checksums.append(name)
+        Dump.dump_temp_relic(root,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+
         if node_type == "relic" or node_type == "r":
             node = Relic(name=name)
             node.checksum_me_rand()

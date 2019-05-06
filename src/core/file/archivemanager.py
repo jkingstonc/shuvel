@@ -29,9 +29,13 @@ class ArchiveManager:
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_stratas(strata_dir):
-        print("Stratas:")
+        
         stratas = [Load.load_node(checksum,strata_dir) for checksum in os.listdir(strata_dir)]
-        for strata in stratas:
-            print("checksum: "+strata._checksum)
-            print("-> name: "+strata._name)
-            print("-> name: "+strata._message)
+        if len(stratas) > 0:
+            print("Stratas:")
+            for strata in stratas:
+                print("checksum: "+strata._checksum)
+                print("-> name: "+strata._name)
+                print("-> name: "+strata._message)
+        else:
+            print("No stratas!")

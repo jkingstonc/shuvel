@@ -5,6 +5,7 @@
 
 from enum import Enum
 from .fileio import FileIO
+from .tempmanager import TempManager
 from ..utils import strings
 from . import shuveldefaults
 
@@ -19,8 +20,7 @@ class ProjectFiles:
         archive_strata = shuveldefaults.STRATA_STORE
 
     class Files(Enum):
-        pass
-        #temp_lookup = shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE
+        temp_root = shuveldefaults.TEMP_ROOT_COLLECTION
 
     # Initialise an empty shuvel project 
     @staticmethod
@@ -33,7 +33,7 @@ class ProjectFiles:
         relic_temp_store=FileIO.create_dir(path+shuveldefaults.RELIC_TEMP_STORE)
         strata_store=FileIO.create_dir(path+shuveldefaults.STRATA_STORE)
 
-        #temp_lookup=FileIO.write_string_overwride(path+shuveldefaults.RELIC_TEMP_STORE+shuveldefaults.TEMP_RELIC_LOOKUP_FILE,".lookup")
+        temp_root = TempManager.gen_root_temp(shuveldefaults.TEMP_ROOT_COLLECTION,path+shuveldefaults.RELIC_TEMP_STORE)
 
     # Check if the given path is withing a .shuv
     @staticmethod
