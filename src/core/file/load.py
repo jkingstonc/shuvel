@@ -17,6 +17,8 @@ class Load:
     @staticmethod
     def load_node(checksum,archive_dir):
         data = FileIO.read_string_full(archive_dir+checksum)
+        if data == None:
+            return None
         data = json.loads(data)
         if data['type']==str(Node.NodeType.relic.value):
             r=Relic(data['creation_date'],data['name'],data['content'])

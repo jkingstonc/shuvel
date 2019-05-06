@@ -72,11 +72,15 @@ class TempManager:
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_temp_files(path, archive_dir):
+        # Get the root node of a project
         root = Load.load_node("root", archive_dir)
-        stack = queue.LifoQueue()
-        stack.put(root)
+        if root != None:
+            stack = queue.LifoQueue()
+            stack.put(root)
 
-        while not stack.empty():
-            next_node, stack =Traversal.traverse_node(stack,archive_dir)
-            depth=Traversal.get_level_of_node(root,next_node,0,archive_dir)
-            print(''.join(" - " for x in range(0,depth))+" "+str(next_node))
+            while not stack.empty():
+                next_node, stack =Traversal.traverse_node(stack,archive_dir)
+                depth=Traversal.get_level_of_node(root,next_node,0,archive_dir)
+                print(''.join(" - " for x in range(0,depth))+" "+str(next_node))
+        else:
+            print("Project empty!")

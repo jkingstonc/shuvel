@@ -63,7 +63,10 @@ class FileIO:
     # Return a file object
     @staticmethod
     def open_file(path, mode=FILE_READ):
-        return open(path,mode=mode)
+        try:
+            return open(path,mode=mode)
+        except:
+            return None
     
     # Close a file object
     @staticmethod
@@ -79,6 +82,8 @@ class FileIO:
     @staticmethod
     def write_bytes_overwride(filename,b):
         f=FileIO.open_file(filename, mode=FileIO.FILE_BIN_WRITE)
+        if f == None:
+            return None
         f.write(b)
         FileIO.close_file(f)
 
@@ -86,6 +91,8 @@ class FileIO:
     @staticmethod
     def write_bytes_append(filename,b):
         f=FileIO.open_file(filename, mode=FileIO.FILE_BIN_APPEND)
+        if f == None:
+            return None
         f.write(b)
         FileIO.close_file(f)
 
@@ -93,6 +100,8 @@ class FileIO:
     @staticmethod
     def read_string_full(filename):
         f = FileIO.open_file(filename, mode=FileIO.FILE_BIN_READ)
+        if f == None:
+            return None
         content = f.read()
         content = conversions.bytes_to_str(content)
         return content
@@ -101,6 +110,8 @@ class FileIO:
     @staticmethod
     def read_string_lines(filename):
         f = FileIO.open_file(filename, mode=FileIO.FILE_BIN_READ)
+        if f == None:
+            return None
         content = f.readlines()
         for i in range(0, len(content)):
             content[i] = conversions.bytes_to_str(content[i])
@@ -110,6 +121,8 @@ class FileIO:
     @staticmethod
     def read_string_line_num(filename, line, num_lines=1):
         lines = FileIO.read_string_lines(filename)
+        if lines == None:
+            return None
         if num_lines > len(lines):
             print("Attempting to read too many lines!")
             return None
