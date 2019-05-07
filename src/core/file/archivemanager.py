@@ -49,17 +49,15 @@ class ArchiveManager:
         )
         
         if len(stratas) > 0:
-            print("Stratas:")
-            print("--------")
-            print("")
+            Log.status_message("Stratas:\n--------")
             for strata in stratas:
-                print("checksum: "+strata._checksum)
-                print("-> date:    "+strata._creation_date)
-                print("-> name:    "+strata._name)
-                print("-> message: "+strata._message)
-                print("")
+                Log.status_content("checksum: "+strata._checksum)
+                Log.status_content("-> date:    "+strata._creation_date)
+                Log.status_content("-> name:    "+strata._name)
+                Log.status_content("-> message: "+strata._message)
+                Log.status_content("\n")
         else:
-            Log.status_error("No stratas!")
+            Log.status_warning("No stratas!")
 
     # Move an archived strata to the temp dir
     @staticmethod

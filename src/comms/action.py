@@ -97,6 +97,14 @@ class FileAction:
                     Log.status_confirmed("successfully peeked '"+name+"' to '"+message+"'.")
                 if out_type == "text" or out_type ==  "t":
                     Log.status_content(node._storage_data_contents)
+            if type(node) is Collection:
+                if out_type == "file" or out_type == "f":
+                    for checksum in node._checksums:
+                        FileIO.write_string_append_line(message,checksum)
+                    Log.status_confirmed("successfully peeked '"+name+"' to '"+message+"'.")
+                if out_type == "text" or out_type ==  "t":
+                    for checksum in node._checksums:
+                        Log.status_content(checksum)
     
     # Move a node from one location to another
     @staticmethod

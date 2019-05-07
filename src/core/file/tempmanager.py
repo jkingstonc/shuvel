@@ -106,7 +106,7 @@ class TempManager:
             while not stack.empty():
                 next_node, stack =Traversal.traverse_node(stack,archive_dir)
                 depth=Traversal.get_level_of_node(root,next_node,0,archive_dir)
-                Log.status_message(''.join(" - " for x in range(0,depth))+" "+str(next_node))
+                Log.status_content(''.join(" - " for x in range(0,depth))+" "+str(next_node))
         else:
             Log.status_warning("Project empty!")
 
