@@ -115,7 +115,7 @@ class FileAction:
                 Dump.dump_temp_relic(node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
                 print("Successfully added to '"+name+"'.")
             else:
-                print("Node must be Relic!")
+                print("'"+name+"' is not a Relic!")
 
 
 
@@ -134,3 +134,14 @@ class FileAction:
                 ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp)
                 )
             print("successfully archived '"+name+"'.")
+
+    # View a directory layout of a checksum in the archives
+    @staticmethod
+    def overview_checksum(path, args):
+        if check_in_project(path):
+            checksum = getattr(args, commands.node_name)
+            checksum=ArchiveManager.get_full_checksum(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
+            print(checksum)
+            strata = Load.load_node(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
+            ArchiveManager.display_archived_files_from_strata(strata, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics))
+        

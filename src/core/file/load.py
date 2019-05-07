@@ -15,7 +15,9 @@ class Load:
 
     # Load a node from disk to object
     @staticmethod
-    def load_node(checksum,archive_dir):
+    def load_node(checksum,archive_dir,using_checksum=False):
+        if using_checksum:
+            checksum=Node.to_short_checksum(checksum)
         data = FileIO.read_string_full(archive_dir+checksum)
         if data == None:
             return None
@@ -34,6 +36,7 @@ class Load:
             return s
         else:
             return None
+
 
     # # Load a relic from disk to an object
     # @staticmethod
