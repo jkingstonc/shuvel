@@ -11,6 +11,7 @@ from core.nodes.relic import Relic
 from core.nodes.collection import Collection
 from core.nodes.strata import Strata
 from core.file.tempmanager import TempManager
+from core.file.fileio import FileIO
 
 from out.log import Log
 
@@ -19,10 +20,11 @@ import os, queue, datetime
 
 class ArchiveManager:
     
-    
+
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_archived_files_from_strata(strata, archive_dir):
+        Log.status_content("Nodes in archive:")
         # Get the root node of a project
         root = Load.load_node(strata._root_node_checksum, archive_dir,using_checksum=True)
         if root != None:
@@ -32,10 +34,28 @@ class ArchiveManager:
             while not stack.empty():
                 next_node, stack =Traversal.traverse_node(stack,archive_dir,using_checksum=True)
                 depth=Traversal.get_level_of_node(root,next_node,0,archive_dir,using_checksum=True)
-                print(''.join(" - " for x in range(0,depth))+" "+str(next_node))
+                Log.status_content(''.join(" - " for x in range(0,depth))+" "+str(next_node))
         else:
             Log.status_error("No archives!")
     
+    # Return a node that is archived via a given strata
+    @staticmethod
+    def get_node_from_strata(strata, node_name, archive_dir):
+        root = Load.load_node(strata._root_node_checksum, archive_dir,using_checksum=True)
+        if root != None:
+            stack = queue.LifoQueue()
+            stack.put(root)
+
+            while not stack.empty():
+                next_node, stack =Traversal.traverse_node(stack,archive_dir,using_checksum=True)
+                if next_node._name == node_name:
+                    return next_node
+            Log.status_warning("No file named '"+node_name+"' in specified archive!")
+            return None
+        else:
+            Log.status_error("Archive doesn't seem to exist :/!")
+            return None
+
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_stratas(strata_dir):
@@ -57,7 +77,7 @@ class ArchiveManager:
                 Log.status_content("-> message: "+strata._message)
                 Log.status_content("\n")
         else:
-            Log.status_warning("No stratas!")
+            Log.status_warning("No archives!")
 
     # Move an archived strata to the temp dir
     @staticmethod

@@ -222,3 +222,36 @@ class FileAction:
                 strata = Load.load_node(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),using_checksum=True)
                 ArchiveManager.excavate_strata(strata, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
                 Log.status_confirmed("successfully excavated '"+checksum+"'.")
+
+    # View an archived node, via specifying strata and node
+    @staticmethod
+    def view(path, args):
+        if check_in_project(path):
+            node_name = getattr(args, commands.node_name)
+            strata_name = getattr(args, commands.destination_node_name)
+            out_type=getattr(args,commands.output_type)
+            variable_type=getattr(args,commands.variable_type)
+            message = getattr(args,commands.message)
+
+            strata_name=ArchiveManager.get_full_checksum(strata_name,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
+            strata = Load.load_node(strata_name,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),using_checksum=True)
+            node = ArchiveManager.get_node_from_strata(strata, node_name, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics))
+
+            if node != None: 
+                to_view=""
+                if variable_type == "date" or variable_type == "d":
+                    to_view=node._creation_date
+                elif variable_type == "checksum" or variable_type == "c":
+                    to_view == node._checksum
+                else:
+                    if type(node) is Relic:
+                        to_view=node._storage_data_contents
+                    elif type(node) is Collection:
+                        for checksum in node._checksums:
+                            to_view+=checksum+"\n"
+                if out_type == "file" or out_type == "f":
+                    FileIO.write_string_overwride(message,to_view)
+                    Log.status_confirmed("successfully viewed '"+node_name+"' to '"+message+"'.")
+                if out_type == "text" or out_type ==  "t":
+                    if to_view != "":
+                        Log.status_content(to_view)

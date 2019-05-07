@@ -17,9 +17,10 @@ live_commands = {
     'write'     : FileAction.write,             # Write data to a temp relic
     'archive'   : FileAction.archive_node,      # Archive a node in the temp folder
 
-    'wipe'      : FileAction.wipe,             # Wipe all stratas and archives
+    'wipe'      : FileAction.wipe,              # Wipe all stratas and archives
     'overview'  : FileAction.overview_checksum, # View a directory layout of a checksum in the archives
     'excavate'  : FileAction.excavate_checksum, # Load an archive contents into the live temp folder
+    'view'      : FileAction.view,              # View an archived node, via specifying strata and node
 }
 
 class Dispatcher:
