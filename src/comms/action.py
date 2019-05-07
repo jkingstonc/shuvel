@@ -73,8 +73,8 @@ class FileAction:
     def wipe(path, args):
         if check_in_project(path):
             if are_you_sure():
-                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
-                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics))
+                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),clear_dirs=True)
+                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp),clear_dirs=False)
                 Log.status_confirmed("Successfully wiped archives!")
 
 
