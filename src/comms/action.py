@@ -38,6 +38,7 @@ class ProjectAction:
     def status(path, args):
         if check_in_project(path):
             TempManager.display_temp_files(ProjectFiles.Dirs.archive_relics_temp.value)
+            print("")
             ArchiveManager.display_stratas(ProjectFiles.Dirs.archive_strata.value)
         
 
@@ -68,7 +69,7 @@ class FileAction:
                 Dump.dump_temp_collection(node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
 
             TempManager.move_node_to_collection(node,move_to,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            print("successfully created '"+name+"' in '"+destination+"'.")
+            print("successfully created '"+name+"'.")
 
     # Move a node from one location to another
     @staticmethod
@@ -141,7 +142,17 @@ class FileAction:
         if check_in_project(path):
             checksum = getattr(args, commands.node_name)
             checksum=ArchiveManager.get_full_checksum(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
-            print(checksum)
             strata = Load.load_node(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
             ArchiveManager.display_archived_files_from_strata(strata, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics))
-        
+
+    # Load an archive contents into the live temp folder
+    @staticmethod
+    def excavate_checksum(path, args):
+
+        if check_in_project(path):
+            TempManager.clear_temp(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+            checksum = getattr(args, commands.node_name)
+            checksum=ArchiveManager.get_full_checksum(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
+            strata = Load.load_node(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),using_checksum=True)
+            ArchiveManager.excavate_strata(strata, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+            print("successfully excavated '"+checksum+"'.")
