@@ -12,6 +12,10 @@ class Log:
     def status_message(message):
         print(Fore.WHITE+message)
 
+    # E.g. printing file contents
+    def status_content(message):
+        print(Fore.YELLOW+message)
+
     # E.g. new file added
     def status_confirmed(message):
         print(Fore.GREEN+message)

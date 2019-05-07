@@ -26,10 +26,12 @@ message_short="-m"
 write_type="write_type"
 write_type_long="--write_type"
 write_type_short="-w"
+
 input_type="input_type"
 input_type_long="--input_type"
 input_type_short="-i"
-append="append"
-append_long="--append"
-append_short="-a"
 
+# View commands
+output_type="output_type"
+output_type_long="--output_type"
+output_type_short="-o"

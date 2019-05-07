@@ -85,8 +85,18 @@ class FileAction:
     # Peek at a node contents
     @staticmethod
     def peek(path, args):
-        pass
+        if check_in_project(path):
+            name = getattr(args, commands.node_name)
+            out_type=getattr(args,commands.output_type)
+            message = getattr(args,commands.message)
 
+            node = Load.load_node(name,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+            if type(node) is Relic:
+                if out_type == "file" or out_type == "f":
+                    FileIO.write_string_overwride(message,node._storage_data_contents)
+                    Log.status_confirmed("successfully peeked '"+name+"' to '"+message+"'.")
+                if out_type == "text" or out_type ==  "t":
+                    Log.status_content(node._storage_data_contents)
     
     # Move a node from one location to another
     @staticmethod
@@ -116,9 +126,9 @@ class FileAction:
             if type(node) is Relic:
                 new_data=None
 
-                if input_type == "text":
+                if input_type == "text" or input_type == "t":
                     new_data=message
-                elif input_type == "file":
+                elif input_type == "file" or input_type == "f":
                     new_data=FileIO.read_string_full(message)
                     if new_data is None:
                         Log.status_error("Error reading file :/")
