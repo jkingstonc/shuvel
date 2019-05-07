@@ -1,15 +1,18 @@
 # Class to help with converting temporary files to archive files
 
-import os, shutil
+import sys, os, shutil
+sys.path.append("...") # Adds higher directory to python modules path.
 
-from ..nodes.node import Node
-from ..nodes.relic import Relic
-from ..nodes.collection import Collection
-from ..nodes.strata import Strata
+from core.nodes.node import Node
+from core.nodes.relic import Relic
+from core.nodes.collection import Collection
+from core.nodes.strata import Strata
 
-from .dump import Dump
-from .load import Load
-from .traversal import Traversal
+from core.file.dump import Dump
+from core.file.load import Load
+from core.file.traversal import Traversal
+
+from out.log import Log
 
 import queue 
 
@@ -96,19 +99,16 @@ class TempManager:
         # Get the root node of a project
         root = Load.load_node("root", archive_dir)
         if root != None:
-            print("Live nodes:")
-            print("-----------")
-            print("")
-            print("")
+            Log.status_message("Live Nodes:\n-----------")
             stack = queue.LifoQueue()
             stack.put(root)
 
             while not stack.empty():
                 next_node, stack =Traversal.traverse_node(stack,archive_dir)
                 depth=Traversal.get_level_of_node(root,next_node,0,archive_dir)
-                print(''.join(" - " for x in range(0,depth))+" "+str(next_node))
+                Log.status_message(''.join(" - " for x in range(0,depth))+" "+str(next_node))
         else:
-            print("Project empty!")
+            Log.status_warning("Project empty!")
 
     # Move a node from one collection to another
     @staticmethod

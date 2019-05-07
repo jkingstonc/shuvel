@@ -29,10 +29,13 @@ class Dispatcher:
         return {
             'init'      : ProjectAction.init,           # initialise a shuvel project
             'status'    : ProjectAction.status,         # Display the status of a project
+            'log'       : ProjectAction.log,            # Display all stratas
 
+            'clear'     : FileAction.clear,             # Clears temp files
             'new'       : FileAction.new,               # Create a new file in the temp folder
+            'peek'      : FileAction.peek,              # Peek at a temp node
             'move'      : FileAction.move,              # Move a node in the temps folder
-            'add'       : FileAction.add,               # Add data to a temp relic
+            'write'     : FileAction.write,             # Write data to a temp relic
             'archive'   : FileAction.archive_node,      # Archive a node in the temp folder
 
             'overview'  : FileAction.overview_checksum, # View a directory layout of a checksum in the archives

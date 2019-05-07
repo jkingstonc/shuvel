@@ -1,15 +1,20 @@
 # Helper class for performing operations related to the archived nodees
 
-from .dump import Dump
-from .load import Load
-from .traversal import Traversal
-from ..nodes.node import Node
-from ..nodes.relic import Relic
-from ..nodes.collection import Collection
-from ..nodes.strata import Strata
-from .tempmanager import TempManager
+import sys
+sys.path.append("...") # Adds higher directory to python modules path.
 
-import os, queue
+from core.file.dump import Dump
+from core.file.load import Load
+from core.file.traversal import Traversal
+from core.nodes.node import Node
+from core.nodes.relic import Relic
+from core.nodes.collection import Collection
+from core.nodes.strata import Strata
+from core.file.tempmanager import TempManager
+
+from out.log import Log
+
+import os, queue, datetime
 
 
 class ArchiveManager:
@@ -29,25 +34,32 @@ class ArchiveManager:
                 depth=Traversal.get_level_of_node(root,next_node,0,archive_dir,using_checksum=True)
                 print(''.join(" - " for x in range(0,depth))+" "+str(next_node))
         else:
-            print("No archives!")
+            Log.status_error("No archives!")
     
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_stratas(strata_dir):
         
         stratas = [Load.load_node(checksum,strata_dir) for checksum in os.listdir(strata_dir)]
+
+        stratas = sorted(
+            stratas,
+            key=lambda x: x._creation_date, reverse=True
+            # key=lambda x: datetime.strptime(x['Created'], '%m/%d/%y %H:%M'), reverse=True
+        )
+        
         if len(stratas) > 0:
             print("Stratas:")
             print("--------")
             print("")
-            print("")
             for strata in stratas:
                 print("checksum: "+strata._checksum)
-                print("-> name: "+strata._name)
-                print("-> name: "+strata._message)
+                print("-> date:    "+strata._creation_date)
+                print("-> name:    "+strata._name)
+                print("-> message: "+strata._message)
                 print("")
         else:
-            print("No stratas!")
+            Log.status_error("No stratas!")
 
     # Move an archived strata to the temp dir
     @staticmethod

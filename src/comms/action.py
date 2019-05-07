@@ -16,10 +16,12 @@ from core.nodes.relic import Relic
 from core.nodes.collection import Collection
 from core.nodes.strata import Strata
 
+from out.log import Log
+
 
 def check_in_project(path):
     if not ProjectFiles.check_project_in_path(path):
-        print("Not in an active shuvel project! [Use shuvel init to create a project]")
+        Log.status_warning("Not in an active shuvel project! [Use shuvel init to create a project]")
         return False
     return True
 
@@ -29,21 +31,30 @@ class ProjectAction:
     # Initialse a project in the given directory
     @staticmethod
     def init(path, args):
-        print("initializing project...")
+        Log.status_message("initializing project...")
         ProjectFiles.init_project(path)
-        print("successfully created Shuvel project.")
+        Log.status_confirmed("successfully created Shuvel project.")
 
     # Gives current status of the project
     @staticmethod
     def status(path, args):
         if check_in_project(path):
             TempManager.display_temp_files(ProjectFiles.Dirs.archive_relics_temp.value)
-            print("")
-            ArchiveManager.display_stratas(ProjectFiles.Dirs.archive_strata.value)
-        
+
+    # Log all stratas
+    @staticmethod
+    def log(path, args):
+        ArchiveManager.display_stratas(ProjectFiles.Dirs.archive_strata.value)
 
 # Class for dispatching project file (node) related commands
 class FileAction:
+
+    # Clears temp folder
+    @staticmethod
+    def clear(path, args):
+        if check_in_project(path):
+            TempManager.clear_temp(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+            Log.status_confirmed("Successfully cleared temp folder!")
 
     # Create a new temporary node in a project
     @staticmethod
@@ -69,8 +80,14 @@ class FileAction:
                 Dump.dump_temp_collection(node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
 
             TempManager.move_node_to_collection(node,move_to,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            print("successfully created '"+name+"'.")
+            Log.status_confirmed("successfully created '"+name+"'.")
 
+    # Peek at a node contents
+    @staticmethod
+    def peek(path, args):
+        pass
+
+    
     # Move a node from one location to another
     @staticmethod
     def move(path, args):
@@ -82,10 +99,10 @@ class FileAction:
             target_node = Load.load_node(target,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
 
             TempManager.move_node_to_collection(source_node,target_node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            print("successfully moved '"+name+"' to '"+target+"'.")
+            Log.status_confirmed("successfully moved '"+name+"' to '"+target+"'.")
 
     @staticmethod
-    def add(path, args):
+    def write(path, args):
         if check_in_project(path):
             name=getattr(args, commands.node_name)
             
@@ -104,7 +121,7 @@ class FileAction:
                 elif input_type == "file":
                     new_data=FileIO.read_string_full(message)
                     if new_data is None:
-                        print("Error reading file :/")
+                        Log.status_error("Error reading file :/")
                         return
                 
                 if write_type=="overwride":
@@ -114,9 +131,9 @@ class FileAction:
 
                 node.checksum_me()
                 Dump.dump_temp_relic(node,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-                print("Successfully added to '"+name+"'.")
+                Log.status_confirmed("Successfully added to '"+name+"'.")
             else:
-                print("'"+name+"' is not a Relic!")
+                Log.status_warning("'"+name+"' is not a Relic!")
 
 
 
@@ -134,7 +151,7 @@ class FileAction:
                 ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics),
                 ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp)
                 )
-            print("successfully archived '"+name+"'.")
+            Log.status_confirmed("successfully archived '"+name+"'.")
 
     # View a directory layout of a checksum in the archives
     @staticmethod
@@ -155,4 +172,4 @@ class FileAction:
             checksum=ArchiveManager.get_full_checksum(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
             strata = Load.load_node(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),using_checksum=True)
             ArchiveManager.excavate_strata(strata, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            print("successfully excavated '"+checksum+"'.")
+            Log.status_confirmed("successfully excavated '"+checksum+"'.")
