@@ -1,45 +1,33 @@
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
 
-# Main commands:
+from comms.action import ProjectAction, FileAction
+from comms import commands
+from out.log import Log
 
-#   Project ->
-#       'init'          - Initialise a new shuvel project
-#       'validate'      - Validate the shuvel project files
-#       'usermodify'    - Modify user information (e.g. username etc)
-#
-#   File ->
-#       'new'
-#
-#
-#
-#
-#
-#
+live_commands = {
+    'init'      : ProjectAction.init,           # initialise a shuvel project
+    'status'    : ProjectAction.status,         # Display the status of a project
+    'log'       : ProjectAction.log,            # Display all stratas
 
-from .action import ProjectAction, FileAction
-from . import commands
+    'clear'     : FileAction.clear,             # Clears temp files
+    'new'       : FileAction.new,               # Create a new file in the temp folder
+    'peek'      : FileAction.peek,              # Peek at a temp node
+    'move'      : FileAction.move,              # Move a node in the temps folder
+    'write'     : FileAction.write,             # Write data to a temp relic
+    'archive'   : FileAction.archive_node,      # Archive a node in the temp folder
+
+    'wipe'      : FileAction.wipe,             # Wipe all stratas and archives
+    'overview'  : FileAction.overview_checksum, # View a directory layout of a checksum in the archives
+    'excavate'  : FileAction.excavate_checksum, # Load an archive contents into the live temp folder
+}
 
 class Dispatcher:
 
     @staticmethod
     def dispatch(source,args):
-        Dispatcher.parse_action(source,getattr(args, commands.action))(source,args)
-
-    @staticmethod
-    def parse_action(source,action):
-        return {
-            'init'      : ProjectAction.init,           # initialise a shuvel project
-            'status'    : ProjectAction.status,         # Display the status of a project
-            'log'       : ProjectAction.log,            # Display all stratas
-
-            'clear'     : FileAction.clear,             # Clears temp files
-            'new'       : FileAction.new,               # Create a new file in the temp folder
-            'peek'      : FileAction.peek,              # Peek at a temp node
-            'move'      : FileAction.move,              # Move a node in the temps folder
-            'write'     : FileAction.write,             # Write data to a temp relic
-            'archive'   : FileAction.archive_node,      # Archive a node in the temp folder
-
-            'overview'  : FileAction.overview_checksum, # View a directory layout of a checksum in the archives
-            'excavate'  : FileAction.excavate_checksum, # Load an archive contents into the live temp folder
-        }[action]
-
-        
+        action=getattr(args, commands.action)
+        if action in live_commands:
+            live_commands[action](source,args)
+        else:
+            Log.status_error("Unknown command '"+action+"'!")        

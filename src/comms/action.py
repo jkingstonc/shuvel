@@ -19,6 +19,14 @@ from core.nodes.strata import Strata
 from out.log import Log
 
 
+def are_you_sure():
+    Log.status_warning("Are you sure? y/n")
+    sure=input("")
+    if sure=="y":
+        return True
+    else:
+        return False
+
 def check_in_project(path):
     if not ProjectFiles.check_project_in_path(path):
         Log.status_warning("Not in an active shuvel project! [Use shuvel init to create a project]")
@@ -44,7 +52,8 @@ class ProjectAction:
     # Log all stratas
     @staticmethod
     def log(path, args):
-        ArchiveManager.display_stratas(ProjectFiles.Dirs.archive_strata.value)
+        if check_in_project(path):
+            ArchiveManager.display_stratas(ProjectFiles.Dirs.archive_strata.value)
 
 # Class for dispatching project file (node) related commands
 class FileAction:
@@ -53,8 +62,21 @@ class FileAction:
     @staticmethod
     def clear(path, args):
         if check_in_project(path):
-            TempManager.clear_temp(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            Log.status_confirmed("Successfully cleared temp folder!")
+            if are_you_sure():
+                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+                TempManager.gen_root_temp("root",ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+                Log.status_confirmed("Successfully cleared temp folder!")
+
+
+    # Wipe all stratas and archives
+    @staticmethod
+    def wipe(path, args):
+        if check_in_project(path):
+            if are_you_sure():
+                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
+                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics))
+                Log.status_confirmed("Successfully wiped archives!")
+
 
     # Create a new temporary node in a project
     @staticmethod
@@ -192,9 +214,11 @@ class FileAction:
     def excavate_checksum(path, args):
 
         if check_in_project(path):
-            TempManager.clear_temp(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            checksum = getattr(args, commands.node_name)
-            checksum=ArchiveManager.get_full_checksum(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
-            strata = Load.load_node(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),using_checksum=True)
-            ArchiveManager.excavate_strata(strata, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            Log.status_confirmed("successfully excavated '"+checksum+"'.")
+            if are_you_sure():
+                FileIO.clear_dir(ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+                TempManager.gen_root_temp("root",ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+                checksum = getattr(args, commands.node_name)
+                checksum=ArchiveManager.get_full_checksum(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata))
+                strata = Load.load_node(checksum,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_strata),using_checksum=True)
+                ArchiveManager.excavate_strata(strata, ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
+                Log.status_confirmed("successfully excavated '"+checksum+"'.")

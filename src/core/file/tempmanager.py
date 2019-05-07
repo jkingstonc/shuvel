@@ -18,18 +18,6 @@ import queue
 
 class TempManager:
     
-    # Completely clear the temp directory
-    @staticmethod
-    def clear_temp(temp_dir):
-        for the_file in os.listdir(temp_dir):
-            file_path = os.path.join(temp_dir, the_file)
-            try:
-                if os.path.isfile(file_path):
-                    os.unlink(file_path)
-                elif os.path.isdir(file_path): shutil.rmtree(file_path)
-            except Exception as e:
-                print(e)
-        TempManager.gen_root_temp("root",temp_dir)
 
     @staticmethod
     def gen_root_temp(name,temp_dir):
