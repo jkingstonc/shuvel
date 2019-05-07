@@ -12,6 +12,8 @@ from core.file.dump import Dump
 from core.file.load import Load
 from core.file.traversal import Traversal
 
+from core.file.fileio import FileIO
+
 from out.log import Log
 
 import queue 
@@ -80,6 +82,36 @@ class TempManager:
 
         return new_collection._checksum
 
+    # Remove a node from the temp dir
+    @staticmethod
+    def del_node(node,temp_dir):
+
+        # Get the root node of a project
+        root = Load.load_node("root", temp_dir)
+        if root != None:
+            if node != None:
+                stack = queue.LifoQueue()
+                stack.put(root)
+
+                while not stack.empty():
+                    next_node, stack =Traversal.traverse_node(stack,temp_dir)
+                    if type(next_node) is Collection:
+                        if node._name in next_node._checksums:
+                            next_node._checksums.remove(node._name)
+                            next_node.checksum_me()
+                            Dump.dump_temp_collection(next_node,temp_dir)
+                
+                FileIO.delete_file(temp_dir+node._name)
+                return True
+            else:
+                Log.status_error("Node doesn't exist!")
+                return False
+        else:
+            Log.status_error("Project empty! [no root]")
+            return False
+
+
+
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_temp_files(archive_dir):
@@ -96,7 +128,7 @@ class TempManager:
                 depth=Traversal.get_level_of_node(root,next_node,0,archive_dir)
                 Log.status_content(''.join(" - " for x in range(0,depth))+" "+str(next_node))
         else:
-            Log.status_warning("Project empty!")
+            Log.status_error("Project empty! [no root]")
 
     # Move a node from one collection to another
     @staticmethod

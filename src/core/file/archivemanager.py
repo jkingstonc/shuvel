@@ -24,7 +24,7 @@ class ArchiveManager:
     # Display a visual representation of a traversal of the temp directory
     @staticmethod
     def display_archived_files_from_strata(strata, archive_dir):
-        Log.status_content("Nodes in archive:")
+        Log.status_message("Nodes in archive '"+strata._name+"' ["+strata._checksum+"]:\n--------------------------------------------------------------------------------------------")
         # Get the root node of a project
         root = Load.load_node(strata._root_node_checksum, archive_dir,using_checksum=True)
         if root != None:

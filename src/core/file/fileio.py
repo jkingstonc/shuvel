@@ -77,6 +77,11 @@ class FileIO:
     @staticmethod
     def clear_file(filename):
         FileIO.write_string_overwride(filename,"")
+    
+    # Remove a file
+    @staticmethod
+    def delete_file(filename):
+        os.remove(filename)
 
     # Write raw bytes to a file with overwride
     @staticmethod

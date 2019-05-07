@@ -104,6 +104,15 @@ class FileAction:
             TempManager.move_node_to_collection(node,move_to,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
             Log.status_confirmed("successfully created '"+name+"'.")
 
+    # Delete file
+    @staticmethod
+    def delete_node(path, args):
+        if check_in_project(path):
+            if are_you_sure():
+                name = getattr(args, commands.node_name)
+                if TempManager.del_node(Load.load_node(name,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp)),ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp)):   
+                    Log.status_confirmed("Succsessfully deleted '"+name+"'.")
+
     # Peek at a node contents
     @staticmethod
     def peek(path, args):

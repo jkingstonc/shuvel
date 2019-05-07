@@ -12,6 +12,7 @@ live_commands = {
 
     'clear'     : FileAction.clear,             # Clears temp files
     'new'       : FileAction.new,               # Create a new file in the temp folder
+    'del'       : FileAction.delete_node,       # Delete a node
     'peek'      : FileAction.peek,              # Peek at a temp node
     'move'      : FileAction.move,              # Move a node in the temps folder
     'write'     : FileAction.write,             # Write data to a temp relic
