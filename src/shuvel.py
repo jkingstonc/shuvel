@@ -16,6 +16,8 @@ if __name__ == "__main__":
     parser.add_argument(commands.write_type_short,commands.write_type_long, help='Overwride or append node content.', default="")
     parser.add_argument(commands.input_type_short,commands.input_type_long, help='Raw input or file input', default="")
     parser.add_argument(commands.output_type_short,commands.output_type_long, help='Raw output or file output', default="")
+    parser.add_argument(commands.variable_type_short,commands.variable_type_long, help='Raw output or file output', default="")
+
 
     args = parser.parse_args()
 

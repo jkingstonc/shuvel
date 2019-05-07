@@ -35,3 +35,8 @@ input_type_short="-i"
 output_type="output_type"
 output_type_long="--output_type"
 output_type_short="-o"
+
+# View commands
+variable_type="variable_type"
+variable_type_long="--variable_type"
+variable_type_short="-v"

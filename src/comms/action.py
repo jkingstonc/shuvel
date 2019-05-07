@@ -88,23 +88,30 @@ class FileAction:
         if check_in_project(path):
             name = getattr(args, commands.node_name)
             out_type=getattr(args,commands.output_type)
+            variable_type=getattr(args,commands.variable_type)
             message = getattr(args,commands.message)
 
             node = Load.load_node(name,ProjectFiles.get_dir_from_root(path,ProjectFiles.Dirs.archive_relics_temp))
-            if type(node) is Relic:
-                if out_type == "file" or out_type == "f":
-                    FileIO.write_string_overwride(message,node._storage_data_contents)
-                    Log.status_confirmed("successfully peeked '"+name+"' to '"+message+"'.")
-                if out_type == "text" or out_type ==  "t":
-                    Log.status_content(node._storage_data_contents)
-            if type(node) is Collection:
-                if out_type == "file" or out_type == "f":
+
+            to_peek=""
+            if variable_type == "date" or variable_type == "d":
+                to_peek=node._creation_date
+            elif variable_type == "checksum" or variable_type == "c":
+                to_peek == node._checksum
+            else:
+                if type(node) is Relic:
+                    to_peek=node._storage_data_contents
+                elif type(node) is Collection:
                     for checksum in node._checksums:
-                        FileIO.write_string_append_line(message,checksum)
-                    Log.status_confirmed("successfully peeked '"+name+"' to '"+message+"'.")
-                if out_type == "text" or out_type ==  "t":
-                    for checksum in node._checksums:
-                        Log.status_content(checksum)
+                        to_peek+=checksum+"\n"
+
+      
+            if out_type == "file" or out_type == "f":
+                FileIO.write_string_overwride(message,to_peek)
+                Log.status_confirmed("successfully peeked '"+name+"' to '"+message+"'.")
+            if out_type == "text" or out_type ==  "t":
+                Log.status_content(to_peek)
+           
     
     # Move a node from one location to another
     @staticmethod
@@ -142,9 +149,9 @@ class FileAction:
                         Log.status_error("Error reading file :/")
                         return
                 
-                if write_type=="overwride":
+                if write_type=="overwride" or write_type=="o":
                     node.set_storage_data_contents(new_data)
-                elif write_type=="append":
+                elif write_type=="append" or write_type=="a":
                     node._storage_data_contents=node._storage_data_contents+new_data
 
                 node.checksum_me()
