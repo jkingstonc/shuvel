@@ -1,7 +1,10 @@
-# James Clarke
-# 22/04/2019
+"""
 
-# A class for helping locate and manage project files/directories
+A class for helping locate and manage project files/directories for a shuvel project.
+Alot of this is missing, project verification, modification, settings etc need to be implemented.
+
+"""
+
 
 from enum import Enum
 from .fileio import FileIO
@@ -11,14 +14,15 @@ from . import shuveldefaults
 
 import os
 
-
 class ProjectFiles:
     
+    # Enum for storing full paths from the shuvel root for directory names
     class Dirs(Enum):
         archive_relics = shuveldefaults.RELIC_STORE
         archive_relics_temp = shuveldefaults.RELIC_TEMP_STORE
         archive_strata = shuveldefaults.STRATA_STORE
 
+    # Enum for storing file names for standard shuvel files
     class Files(Enum):
         temp_root = shuveldefaults.TEMP_ROOT_COLLECTION
 
@@ -32,8 +36,9 @@ class ProjectFiles:
         relic_store=FileIO.create_dir(path+shuveldefaults.RELIC_STORE)
         relic_temp_store=FileIO.create_dir(path+shuveldefaults.RELIC_TEMP_STORE)
         strata_store=FileIO.create_dir(path+shuveldefaults.STRATA_STORE)
-
+        # Generate a root collection in the temp archives
         temp_root = TempManager.gen_root_temp(shuveldefaults.TEMP_ROOT_COLLECTION,path+shuveldefaults.RELIC_TEMP_STORE)
+        return True
 
     # Check if the given path is withing a .shuv
     @staticmethod
@@ -60,9 +65,6 @@ class ProjectFiles:
     def get_dir_from_root(path, directory_specifier):
         return ProjectFiles.get_project_root(path)+directory_specifier.value
 
-    def get_file_from_root(path, file):
-        return ProjectFiles.get_project_root(path)+file.value
-
     # Locate .shuv component directory paths
     @staticmethod
     def get_project_component_dir_path(path, component_dir):
@@ -78,8 +80,3 @@ class ProjectFiles:
     def validate_shuv(path):
         # Here we need to traverse from .shuv and ensure the required files/directories are located
         pass
-
-    # Display all nodes in a given directory
-    @staticmethod
-    def display_nodes(path, archive_dir):
-        print(os.listdir(archive_dir))

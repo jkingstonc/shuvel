@@ -1,6 +1,9 @@
+"""
 
+File for logging data to std out.
+Used colorama which isn't installed by default in Python 2/3.
 
-# Class to help with sending to std out
+"""
 
 from colorama import init, Fore, Back, Style
 

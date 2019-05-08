@@ -1,3 +1,12 @@
+"""
+
+Handles dispatching of action commands.
+Note: Arguably this file is fairly redundant and could be included in others, 
+however it may get more complex in future versions.
+
+"""
+
+
 import sys
 sys.path.append("..") # Adds higher directory to python modules path.
 

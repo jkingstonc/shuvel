@@ -1,7 +1,9 @@
-# James Clarke
-# 18/04/2019
+""" 
 
-# Node that represents a node object on disk
+A node represents a template for relics, collections and stratas to inherit from.
+Cannot be instantiated itself.
+
+"""
 
 
 from ..utils import conversions

@@ -1,37 +1,43 @@
-# James Clarke
-# 18/04/2019
+""" 
 
-# Relic that represents a file on disk
+A relic represents a file on disk that contains any type of data.
+
+"""
 
 from .node import Node
 
 import json
-from datetime import date
+import datetime
 
 class Relic(Node):
 
-    def __init__(self,creation_date=date.today(),name="DEFAULT",storage_contents=""):
+    def __init__(self,creation_date=datetime.datetime.now(),name="DEFAULT",storage_contents=""):
         super().__init__()
 
-        self._creation_date=creation_date               # The date this relic was created
-        self._name=name                                 # Name associated with this relic
-        self._storage_data_contents=storage_contents    # Contains the raw data that is described in the origin file to be written to disk
+        self._creation_date=creation_date               
+        self._name=name                             
+        # Contains the raw string that this relic holds
+        # Note: this can be extremely large and may beed to be implemented in a different way becuase of that
+        self._storage_data_contents=storage_contents
+
     def __str__(self):
-        return "Checksum: "+str(self.get_checksum_short())+"..., Creation-Date: "+str(self._creation_date)+", Storage-Data-Contents: "+str(self._storage_data_contents)
+        return self._name
     
-    # Set the checksum for this relic object
+    # Passing all the relic member variables into the node checksum function
     def checksum_me(self):
         self._checksum=Node.generate_checksum(str(self._creation_date)+str(self._name)+str(self._storage_data_contents))
-    # Set the creation date for this relic object
-    def set_creation_date(self, creation_date=date.today()):
+
+    def set_creation_date(self, creation_date=datetime.datetime.now()):
         self._creation_date=creation_date
-    # Set the name associated with this relic
+
     def set_name(self, name):
         self._name=name
-    # Set the storage data contents for this relic object
+
     def set_storage_data_contents(self, contents):
         self._storage_data_contents=str(contents)
-    # Dump the relic contents into a single string
+    
+    # Dump the relic contents into a single JSON object
+    # Note: type is required for loading objects, as load only has 1 load function for all nodes
     def get_string_dump(self):
         data={}
         data['checksum'] = str(self._checksum)

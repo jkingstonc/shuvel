@@ -1,10 +1,14 @@
-# James Clarke
-# 18/04/2019
+"""
 
-# File handling static utilities for file operations
+File handling functions.
+Note: Alot of these are redundant, as the current shuvel implementation only uses full reading/writing so
+specific line and index operations currently are not in use
+
+"""
+
+from .. utils import conversions
 
 import os, shutil
-from .. utils import conversions
 
 class FileIO:
 
@@ -20,16 +24,15 @@ class FileIO:
 
     ENCODING_UTF8 = 'utf-8'
 
-
     # Write a string to a file with overwride
     @staticmethod
     def write_string_overwride(filename,string):
-        FileIO.write_bytes_overwride(filename, conversions.str_to_bytes(str(string)))
+        return FileIO.write_bytes_overwride(filename, conversions.str_to_bytes(str(string)))
 
     # Write a string to a file with appendment
     @staticmethod
     def write_string_append(filename,string):
-        FileIO.write_bytes_append(filename, conversions.str_to_bytes(str(string)))
+        return FileIO.write_bytes_append(filename, conversions.str_to_bytes(str(string)))
 
     # Write a string and overwride a specific line
     @staticmethod
@@ -38,7 +41,7 @@ class FileIO:
             string+='\n'
         lines = FileIO.read_string_lines(filename)
         lines[line_num-1]=string
-        FileIO.write_string_overwride(filename,''.join(lines))
+        return FileIO.write_string_overwride(filename,''.join(lines))
 
     # Write a string and append a specific line
     @staticmethod
@@ -47,7 +50,7 @@ class FileIO:
             string+='\n'
         lines = FileIO.read_string_lines(filename)
         lines[line_num-1]=lines[line_num-1].rstrip()+string # rstrip() removes \n
-        FileIO.write_string_overwride(filename,''.join(lines))
+        return FileIO.write_string_overwride(filename,''.join(lines))
 
     # Write a string and insert after a specific line
     @staticmethod
@@ -56,9 +59,7 @@ class FileIO:
             string+='\n'
         lines = FileIO.read_string_lines(filename)
         lines.insert(line_num-1, string)
-        FileIO.write_string_overwride(filename,''.join(lines))
-
-
+        return FileIO.write_string_overwride(filename,''.join(lines))
 
     # Return a file object
     @staticmethod
@@ -72,34 +73,35 @@ class FileIO:
     @staticmethod
     def close_file(file):
         file.close()
+        return True
 
     # Clear out a file
     @staticmethod
     def clear_file(filename):
-        FileIO.write_string_overwride(filename,"")
+        return FileIO.write_string_overwride(filename,"")
     
     # Remove a file
     @staticmethod
     def delete_file(filename):
-        os.remove(filename)
+        return os.remove(filename)
 
     # Write raw bytes to a file with overwride
     @staticmethod
     def write_bytes_overwride(filename,b):
         f=FileIO.open_file(filename, mode=FileIO.FILE_BIN_WRITE)
         if f == None:
-            return None
+            return False
         f.write(b)
-        FileIO.close_file(f)
+        return FileIO.close_file(f)
 
     # Write raw bytes to a file with appendment
     @staticmethod
     def write_bytes_append(filename,b):
         f=FileIO.open_file(filename, mode=FileIO.FILE_BIN_APPEND)
         if f == None:
-            return None
+            return False
         f.write(b)
-        FileIO.close_file(f)
+        return FileIO.close_file(f)
 
     # Read a file as a string into a single string
     @staticmethod
@@ -148,6 +150,8 @@ class FileIO:
                         shutil.rmtree(file_path)
             except Exception as e:
                 print(e)
+                return False
+        return True
 
     # Create a directory at path with name
     @staticmethod
@@ -173,7 +177,6 @@ class FileIO:
     def check_for_immediate_sub_dir(path, required):
         if required in FileIO.get_immediate_sub_dirs(path):
             return True
-
         return False
 
     # Check if a subdirectory is within a directory recursively
@@ -182,7 +185,6 @@ class FileIO:
         for dir in FileIO.get_sub_dirs(path):
             if required in dir:
                 return True
-
         return False
 
     # Check if a directory is contained in a path

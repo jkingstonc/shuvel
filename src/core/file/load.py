@@ -1,7 +1,8 @@
-# James Clarke
-# 02/05/2019
+"""
 
-# All verification is done before any of these functions are called
+Class for loading nodes from disk.
+
+"""
 
 from ..file.fileio import FileIO
 from ..nodes.node import Node
@@ -16,6 +17,7 @@ class Load:
     # Load a node from disk to object
     @staticmethod
     def load_node(checksum,archive_dir,using_checksum=False):
+        # If we are loading via a checksum, we need the short version of it
         if using_checksum:
             checksum=Node.to_short_checksum(checksum)
         data = FileIO.read_string_full(archive_dir+checksum)
@@ -36,45 +38,3 @@ class Load:
             return s
         else:
             return None
-
-
-    # # Load a relic from disk to an object
-    # @staticmethod
-    # def load_relic(checksum,archive_dir):
-    #     data = FileIO.read_string_full(archive_dir+checksum)
-    #     data = json.loads(data)
-    #     r=Relic(data['creation_date'],data['name'],data['content'])
-    #     return r
-
-    # # Load a temporary relic from disk to an object
-    # @staticmethod
-    # def load_temp_relic(name,archive_dir):
-    #     data = FileIO.read_string_full(archive_dir+name)
-    #     data = json.loads(data)
-    #     r=Relic(data['creation_date'],data['name'],data['content'])
-    #     return r
-
-    # # Load a collection from disk to an object
-    # @staticmethod
-    # def load_collection(checksum,archive_dir):
-    #     data = FileIO.read_string_full(archive_dir+checksum)
-    #     data = json.loads(data)
-    #     r=Collection(data['creation_date'],data['name'],data['content'])
-    #     return r
-
-    # # Load a temporary collection from disk to an object
-    # @staticmethod
-    # def load_temp_collection(name,archive_dir):
-    #     data = FileIO.read_string_full(archive_dir+name)
-    #     data = json.loads(data)
-    #     r=Collection(data['creation_date'],data['name'],data['content'])
-    #     return r
-
-    # # Load a strata object from disk into an object
-    # @staticmethod
-    # def load_strata(chekcksum,archive_dir):
-    #     data = FileIO.read_string_full(archive_dir+checksum)
-    #     data = json.loads(data)
-    #     r=Strata(data['creation_date'],data['name'],data['content'])
-    #     return r
-

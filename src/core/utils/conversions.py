@@ -1,9 +1,9 @@
-# James Clarke
-# 18/04/2019
+"""
 
-# Conversion utilities for common operations
-# (Big endian is used)
+Conversion utilities for standard operations, typically from standard data types to one and other.
+Where bytes are converted, big endian should be used.
 
+"""
 
 # Convert a string to byte array
 def str_to_bytes(string):
