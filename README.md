@@ -1,2 +1,2 @@
 # shuvel
-A virtual file system for storing, archiving and updating data objects
+Shuvel is a lightweight & robust virtual data archiving system for Windows, Linux & Mac.
